@@ -6,7 +6,7 @@
 /*   By: ayanaga <ayanaga@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/13 22:44:13 by ayanaga           #+#    #+#             */
-/*   Updated: 2026/06/27 07:43:39 by ayanaga          ###   ########.fr       */
+/*   Updated: 2026/06/28 18:09:50 by ayanaga          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,46 +79,146 @@ t_list	*ft_lstlast(t_list *lst)
 	return (lst);
 }
 
-int	compute_disorder(int count, char *a)
+int	compute_disorder(t_list **stack_a)
 {
-	int	mistakes;
-	int	total_pairs;
-	int	i;
+	int		mistakes;
+	int		total_pairs;
+	t_list	*now_node;
+	t_list	*next_node;
 
 	mistakes = 0;
 	total_pairs = 0;
-	i = 0;
-	while (i < count - 2)
+	now_node = *stack_a;
+	next_node = (*stack_a)->next;
+	while (now_node->next != NULL)
 	{
-		while (i + 1 < count - 2)
+		while (next_node->next != NULL)
 		{
-			if (ft_atoi(a[i]) > ft_atoi(a[i + 1]))
+			if ((now_node->content) > (next_node->content))
 				mistakes++;
 			total_pairs++;
+			next_node = next_node->next;
 		}
+		now_node = now_node->next;
+		next_node = now_node->next;
 	}
 	return (mistakes / total_pairs);
 }
 
+int	check_duplication(t_list **stack_a, int value)
+{
+	t_list	*check_node;
+
+	check_node = *stack_a;
+	if (check_node == NULL)
+		return (1);
+	while (check_node->next != NULL)
+	{
+		if (check_node->content == value)
+			return (0);
+		check_node = check_node->next;
+	}
+	if (check_node->content == value)
+		return (0);
+	return (1);
+}
+
+int	ft_strncmp(char *s1, char *s2)
+{
+	int	i;
+
+	i = 0;
+	while (s1[i] != '\0' || s2[i] != '\0')
+	{
+		if (s1[i] != s2[i])
+			return (0);
+		i++;
+	}
+	return (1);
+}
+
+int	ft_isdigit(char c)
+{
+	if ('0' <= c && c <= '9')
+		return (1);
+	else
+		return (0);
+}
+
+void	check_adaptive(float disorder, t_list **stack_a, t_list **stack_b)
+{
+	if (disorder < 0.2)
+		simple(&stack_a, &stack_b);
+	if (0.2 <= disorder && disorder < 0.5)
+		medium(&stack_a, &stack_b);
+	if (0.5 <= disorder)
+		complex(&stack_a, &stack_b);
+}
+int	ft_strlen(char *s)
+{
+	int	i;
+
+	i = 0;
+	while (s[i] != '\0')
+		i++;
+	return (i);
+}
+
 int	push_swap(int argc, char *argv[])
 {
-	int		disorder;
 	int		i;
-	int		int_a;
+	int		count;
 	t_list	*stack_a;
 	t_list	*stack_b;
+	char	*flg;
 
-	i = 2;
-	disorder = compute_disorder(agc, argv);
-	if (disorder == 0)
-		return (0);
-	stack_a = ft_lstnew(ft_atoi(argv[1]));
-	stack_b = ft_lstnew(ft_atoi(argv[1]));
-	while (argc > i)
+	i = 1;
+	while (i < argc)
 	{
-		ft_lstadd_back(&stack_a, ft_atoi(argv[i]));
-		ft_lstadd_back(&stack_b, NULL);
+		if (argv[i][0] == '-' && argv[i][1] == '-')
+		{
+			i++;
+		}
+		else
+		{
+			if (stack_a == NULL)
+				stack_a = ft_lstnew(ft_atoi(argv[i]));
+			else
+			{
+				if (!check_duplication(&stack_a, ft_atoi(argv[i])))
+				{
+					write(2, "Error\n", 6);
+					return (0);
+				}
+				ft_lstadd_back(&stack_a, ft_atoi(argv[i]));
+			}
+			i++;
+		}
 	}
+	if (stack_a == NULL || stack_a->next == NULL)
+		return (0);
+	if (compute_disorder(&stack_a) == 0)
+		return (0);
+	i = 1;
+	count = 0;
+	while (i < argc)
+	{
+		if (ft_strncmp(argv[i], "--bench"))
+			bench();
+		if (ft_strncmp(argv[i], "--simple"))
+			simple(&stack_a, &stack_b);
+		else if (ft_strncmp(argv[i], "--medium"))
+			medium(&stack_a, &stack_b);
+		else if (ft_strncmp(argv[i], "--complex"))
+			complex(&stack_a, &stack_b);
+		else if (ft_strncmp(argv[i], "--adaptive"))
+			check_adaptive(compute_disorder(agc, argv), &stack_a, &stack_b);
+		else
+			count++;
+		i++;
+	}
+	if (count == argc - 1)
+		check_adaptive(compute_disorder(agc, argv), &stack_a, &stack_b);
 }
 
 int	small_search(t_list **stack)
@@ -128,18 +228,21 @@ int	small_search(t_list **stack)
 	int		count;
 	int		small_content_count;
 
-	first_node = *stack_a;
-	small_content = *stack_a->content;
-	while ((*stack_a)->next != NULL)
+	count = 0;
+	first_node = *stack;
+	small_content = (*stack)->content;
+	while ((*stack)->next != NULL)
 	{
-		*stack_a = (*stack_a)->next;
+		*stack = (*stack)->next;
 		count++;
-		if ((*stack_a)->content > small_content)
+		if ((*stack)->content < small_content)
 		{
-			small_content = (*stack_a)->content;
+			small_content = (*stack)->content;
 			small_content_count = count;
 		}
 	}
+	*stack = first_node;
+	return (small_content_count);
 }
 
 int	count_node(t_list **stack)
@@ -161,19 +264,31 @@ int	count_node(t_list **stack)
 
 void	simple(t_list **stack_a, t_list **stack_b)
 {
-	t_list	*a_first_node;
-	int		small_content;
+	int	small_content_count;
+	int	node_count;
+	int	i;
 
-	a_first_node = *stack_a;
-	small_content = *stack_a->content;
-	while ((*stack_a)->next != NULL)
+	i = 0;
+	node_count = count_node(stack_a);
+	while (count_node(stack_a) > 0)
 	{
-		*stack_a = (*stack_a)->next;
-		if ((*stack_a)->content > small_content)
-			small_content = (*stack_a)->content;
+		small_content_count = small_search(stack_a);
+		while (i < small_content_count)
+		{
+			if (small_content_count >= node_count / 2)
+				reverse_rotate_a(stack_a);
+			else
+				rotate_a(stack_a);
+			i++;
+		}
+		i = 0;
+		push_a(stack_a, stack_b);
 	}
-	a_first_node->next = *stack_b;
-	*stack_b = a_first_node;
+	while (node_count > 0)
+	{
+		push_b(stack_a, stack_b);
+		node_count--;
+	}
 }
 
 void	swap_a(t_list **lst)
@@ -186,6 +301,7 @@ void	swap_a(t_list **lst)
 		second_node = (*stack)->next;
 	first_node->next = second_node;
 	second_node->next = first_node;
+	write(1, "sa\n", 3);
 }
 
 void	swap_b(t_list **lst)
@@ -198,6 +314,7 @@ void	swap_b(t_list **lst)
 		second_node = (*stack)->next;
 	first_node->next = second_node;
 	second_node->next = first_node;
+	write(1, "sb\n", 3);
 }
 
 void	push_a(t_list **stack_a, t_list **stack_b)
@@ -209,6 +326,7 @@ void	push_a(t_list **stack_a, t_list **stack_b)
 		*stack_a = (*stack_a)->next;
 	a_first_node->next = *stack_b;
 	*stack_b = a_first_node;
+	write(1, "pa\n", 3);
 }
 
 void	push_b(t_list **stack_a, t_list **stack_b)
@@ -220,6 +338,7 @@ void	push_b(t_list **stack_a, t_list **stack_b)
 		*stack_b = (*stack_b)->next;
 	b_first_node->next = *stack_a;
 	*stack_a = b_first_node;
+	write(1, "pb\n", 3);
 }
 
 void	rotate_a(t_list **stack)
@@ -235,6 +354,7 @@ void	rotate_a(t_list **stack)
 	first_node->next = NULL;
 	(*stack)->next = first_node;
 	*stack = second_node;
+	write(1, "ra\n", 3);
 }
 
 void	rotate_b(t_list **stack)
@@ -250,6 +370,7 @@ void	rotate_b(t_list **stack)
 	first_node->next = NULL;
 	(*stack)->next = first_node;
 	*stack = second_node;
+	write(1, "rb\n", 3);
 }
 
 void	reverse_rotate_a(t_list **stack)
@@ -268,6 +389,7 @@ void	reverse_rotate_a(t_list **stack)
 	next_last_node->next = NULL;
 	last_node->next = first_node;
 	*stack = last_node;
+	write(1, "rra\n", 4);
 }
 
 void	reverse_rotate_b(t_list **stack)
@@ -286,4 +408,5 @@ void	reverse_rotate_b(t_list **stack)
 	next_last_node->next = NULL;
 	last_node->next = first_node;
 	*stack = last_node;
+	write(1, "rrb\n", 4);
 }
