@@ -6,15 +6,9 @@
 /*   By: ayanaga <ayanaga@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/13 22:44:13 by ayanaga           #+#    #+#             */
-/*   Updated: 2026/06/28 18:09:50 by ayanaga          ###   ########.fr       */
+/*   Updated: 2026/06/30 21:44:19 by ayanaga          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-typedef struct s_list
-{
-	int				content;
-	struct s_list	*next;
-}					t_list;
 
 int	ft_atoi(char *nptr)
 {
