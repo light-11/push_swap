@@ -6,9 +6,13 @@
 /*   By: ayanaga <ayanaga@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/13 22:44:13 by ayanaga           #+#    #+#             */
-/*   Updated: 2026/06/30 21:44:19 by ayanaga          ###   ########.fr       */
+/*   Updated: 2026/07/01 23:20:01 by ayanaga          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include "push_swap.h"
+#include <stdlib.h>
+#include <unistd.h>
 
 int	ft_atoi(char *nptr)
 {
@@ -35,7 +39,7 @@ int	ft_atoi(char *nptr)
 	return ((int)(num * minus));
 }
 
-t_list	*ft_lstnew(void *int_a1)
+t_list	*ft_lstnew(int content)
 {
 	t_list	*new;
 
@@ -47,19 +51,14 @@ t_list	*ft_lstnew(void *int_a1)
 	return (new);
 }
 
-void	ft_lstadd_back(t_list **lst, t_list *new)
+void	ft_lstadd_back(t_list **stack, int content)
 {
 	t_list	*tmp;
 
-	if (*lst == NULL)
-	{
-		*lst = new;
-		return ;
-	}
-	tmp = *lst;
+	tmp = *stack;
 	while (tmp->next != NULL)
 		tmp = tmp->next;
-	tmp->next = new;
+	tmp->next = ft_lstnew(content);
 }
 
 t_list	*ft_lstlast(t_list *lst)
@@ -142,11 +141,11 @@ int	ft_isdigit(char c)
 void	check_adaptive(float disorder, t_list **stack_a, t_list **stack_b)
 {
 	if (disorder < 0.2)
-		simple(&stack_a, &stack_b);
-	if (0.2 <= disorder && disorder < 0.5)
-		medium(&stack_a, &stack_b);
-	if (0.5 <= disorder)
-		complex(&stack_a, &stack_b);
+		simple(stack_a, stack_b);
+	//if (0.2 <= disorder && disorder < 0.5)
+	//	medium(stack_a, stack_b);
+	//if (0.5 <= disorder)
+	//	complex(stack_a, stack_b);
 }
 int	ft_strlen(char *s)
 {
@@ -164,15 +163,14 @@ int	push_swap(int argc, char *argv[])
 	int		count;
 	t_list	*stack_a;
 	t_list	*stack_b;
-	char	*flg;
 
+	stack_a = NULL;
+	stack_b = NULL;
 	i = 1;
 	while (i < argc)
 	{
 		if (argv[i][0] == '-' && argv[i][1] == '-')
-		{
 			i++;
-		}
 		else
 		{
 			if (stack_a == NULL)
@@ -197,22 +195,23 @@ int	push_swap(int argc, char *argv[])
 	count = 0;
 	while (i < argc)
 	{
-		if (ft_strncmp(argv[i], "--bench"))
-			bench();
+		//if (ft_strncmp(argv[i], "--bench"))
+		//	bench();
 		if (ft_strncmp(argv[i], "--simple"))
 			simple(&stack_a, &stack_b);
-		else if (ft_strncmp(argv[i], "--medium"))
-			medium(&stack_a, &stack_b);
-		else if (ft_strncmp(argv[i], "--complex"))
-			complex(&stack_a, &stack_b);
-		else if (ft_strncmp(argv[i], "--adaptive"))
-			check_adaptive(compute_disorder(agc, argv), &stack_a, &stack_b);
+		//else if (ft_strncmp(argv[i], "--medium"))
+		//	medium(&stack_a, &stack_b);
+		//else if (ft_strncmp(argv[i], "--complex"))
+		//	complex(&stack_a, &stack_b);
+		//else if (ft_strncmp(argv[i], "--adaptive"))
+		//	check_adaptive(compute_disorder(&stack_a), &stack_a, &stack_b);
 		else
 			count++;
 		i++;
 	}
 	if (count == argc - 1)
-		check_adaptive(compute_disorder(agc, argv), &stack_a, &stack_b);
+		check_adaptive(compute_disorder(&stack_a), &stack_a, &stack_b);
+	return (0);
 }
 
 int	small_search(t_list **stack)
@@ -223,6 +222,7 @@ int	small_search(t_list **stack)
 	int		small_content_count;
 
 	count = 0;
+	small_content_count = 0;
 	first_node = *stack;
 	small_content = (*stack)->content;
 	while ((*stack)->next != NULL)
@@ -285,45 +285,31 @@ void	simple(t_list **stack_a, t_list **stack_b)
 	}
 }
 
-void	swap_a(t_list **lst)
+void	swap_a(t_list **stack)
 {
 	t_list	*first_node;
 	t_list	*second_node;
 
 	first_node = *stack;
-	if ((*stack)->next != NULL)
-		second_node = (*stack)->next;
+	second_node = (*stack)->next;
 	first_node->next = second_node;
 	second_node->next = first_node;
 	write(1, "sa\n", 3);
 }
 
-void	swap_b(t_list **lst)
+void	swap_b(t_list **stack)
 {
 	t_list	*first_node;
 	t_list	*second_node;
 
 	first_node = *stack;
-	if ((*stack)->next != NULL)
-		second_node = (*stack)->next;
+	second_node = (*stack)->next;
 	first_node->next = second_node;
 	second_node->next = first_node;
 	write(1, "sb\n", 3);
 }
 
 void	push_a(t_list **stack_a, t_list **stack_b)
-{
-	t_list	*a_first_node;
-
-	a_first_node = *stack_a;
-	if ((*stack_a)->next != NULL)
-		*stack_a = (*stack_a)->next;
-	a_first_node->next = *stack_b;
-	*stack_b = a_first_node;
-	write(1, "pa\n", 3);
-}
-
-void	push_b(t_list **stack_a, t_list **stack_b)
 {
 	t_list	*b_first_node;
 
@@ -333,6 +319,18 @@ void	push_b(t_list **stack_a, t_list **stack_b)
 	b_first_node->next = *stack_a;
 	*stack_a = b_first_node;
 	write(1, "pb\n", 3);
+}
+
+void	push_b(t_list **stack_a, t_list **stack_b)
+{
+	t_list	*a_first_node;
+
+	a_first_node = *stack_a;
+	if ((*stack_a)->next != NULL)
+		*stack_a = (*stack_a)->next;
+	a_first_node->next = *stack_b;
+	*stack_b = a_first_node;
+	write(1, "pa\n", 3);
 }
 
 void	rotate_a(t_list **stack)
@@ -403,4 +401,9 @@ void	reverse_rotate_b(t_list **stack)
 	last_node->next = first_node;
 	*stack = last_node;
 	write(1, "rrb\n", 4);
+}
+
+int	main(int argc, char *argv[])
+{
+	push_swap(argc, argv);
 }

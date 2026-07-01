@@ -6,7 +6,7 @@
 /*   By: ayanaga <ayanaga@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/13 22:42:29 by ayanaga           #+#    #+#             */
-/*   Updated: 2026/06/30 21:42:51 by ayanaga          ###   ########.fr       */
+/*   Updated: 2026/07/01 22:54:32 by ayanaga          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int					ft_isdigit(char c);
 
 /* list */
 t_list				*ft_lstnew(int content);
-void				ft_lstadd_back(t_list **lst, t_list *new);
+void				ft_lstadd_back(t_list **lst, int content);
 t_list				*ft_lstlast(t_list *lst);
 int					count_node(t_list **stack);
 
