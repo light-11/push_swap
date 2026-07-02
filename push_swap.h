@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   push_swap.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ayanaga <ayanaga@student.42tokyo.jp>       +#+  +:+       +#+        */
+/*   By: ayanaga <ayanaga@student.42.ja>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/13 22:42:29 by ayanaga           #+#    #+#             */
-/*   Updated: 2026/07/01 22:54:32 by ayanaga          ###   ########.fr       */
+/*   Updated: 2026/07/02 21:00:30 by ayanaga          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int					count_node(t_list **stack);
 
 /* check */
 int					check_duplication(t_list **stack_a, int value);
-int					compute_disorder(t_list **stack_a);
+float				compute_disorder(t_list **stack_a);
 void				check_adaptive(float disorder, t_list **stack_a,
 						t_list **stack_b);
 
