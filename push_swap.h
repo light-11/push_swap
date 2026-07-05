@@ -6,7 +6,7 @@
 /*   By: miida <miida@student.42tokyo.jp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/13 22:42:29 by ayanaga           #+#    #+#             */
-/*   Updated: 2026/07/05 21:30:39 by miida            ###   ########.fr       */
+/*   Updated: 2026/07/05 21:42:48 by miida            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,13 +32,13 @@ void				coordinate_compression(t_list **stack_a);
 
 /* list */
 t_list				*ft_lstnew(int content);
-void				ft_lstadd_back(t_list **lst, t_list *new);
+void				ft_lstadd_back(t_list **lst, int content);
 t_list				*ft_lstlast(t_list *lst);
 int					count_node(t_list **stack);
 
 /* check */
 int					check_duplication(t_list **stack_a, int value);
-int					compute_disorder(t_list **stack_a);
+float				compute_disorder(t_list **stack_a);
 void				check_adaptive(float disorder, t_list **stack_a,
 						t_list **stack_b);
 
