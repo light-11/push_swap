@@ -3,17 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   push_swap.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-<<<<<<< Updated upstream
-/*   By: ayanaga <ayanaga@student.42tokyo.jp>       +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/06/13 22:44:13 by ayanaga           #+#    #+#             */
-/*   Updated: 2026/06/30 21:44:19 by ayanaga          ###   ########.fr       */
-=======
 /*   By: miida <miida@student.42tokyo.jp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/13 22:44:13 by ayanaga           #+#    #+#             */
-/*   Updated: 2026/07/05 20:38:55 by miida            ###   ########.fr       */
->>>>>>> Stashed changes
+/*   Updated: 2026/07/05 21:31:46 by miida            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +32,7 @@ int	ft_atoi(char *nptr)
 		num = num * 10 + (nptr[i] - '0');
 		i++;
 	}
-	return ((int)(num * minus));
+	return ((int)(num * minus));`
 }
 
 t_list	*ft_lstnew(void *int_a1)
@@ -59,14 +52,6 @@ void	ft_lstadd_back(t_list **lst, t_list *new)
 {
 	t_list	*tmp;
 
-<<<<<<< Updated upstream
-	if (*lst == NULL)
-	{
-		*lst = new;
-		return ;
-	}
-	tmp = *lst;
-=======
 	if (stack == NULL)
 		return ;
 	if (*stack == NULL)
@@ -75,7 +60,6 @@ void	ft_lstadd_back(t_list **lst, t_list *new)
 		return ;
 	}
 	tmp = *stack;
->>>>>>> Stashed changes
 	while (tmp->next != NULL)
 		tmp = tmp->next;
 	tmp->next = new;
