@@ -6,7 +6,7 @@
 /*   By: miida <miida@student.42tokyo.jp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/13 22:44:13 by ayanaga           #+#    #+#             */
-/*   Updated: 2026/07/05 21:43:05 by miida            ###   ########.fr       */
+/*   Updated: 2026/07/05 22:03:23 by miida            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -216,6 +216,7 @@ int	push_swap(int argc, char *argv[])
 		return (0);
 	if (compute_disorder(&stack_a) == 0)
 		return (0);
+	coordinate_compression(&stack_a);
 	i = 1;
 	count = 0;
 	while (i < argc)
