@@ -3,10 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   push_swap.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
+<<<<<<< Updated upstream
 /*   By: ayanaga <ayanaga@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/13 22:42:29 by ayanaga           #+#    #+#             */
 /*   Updated: 2026/06/30 21:42:51 by ayanaga          ###   ########.fr       */
+=======
+/*   By: miida <miida@student.42tokyo.jp>           +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/06/13 22:42:29 by ayanaga           #+#    #+#             */
+/*   Updated: 2026/07/05 20:28:19 by miida            ###   ########.fr       */
+>>>>>>> Stashed changes
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +26,7 @@
 typedef struct s_list
 {
 	int				content;
+	int				rank;
 	struct s_list	*next;
 }					t_list;
 
@@ -27,6 +35,7 @@ int					ft_atoi(char *nptr);
 int					ft_strlen(char *s);
 int					ft_strncmp(char *s1, char *s2);
 int					ft_isdigit(char c);
+void				coordinate_compression(t_list **stack_a);
 
 /* list */
 t_list				*ft_lstnew(int content);

@@ -3,10 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   push_swap.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
+<<<<<<< Updated upstream
 /*   By: ayanaga <ayanaga@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/13 22:44:13 by ayanaga           #+#    #+#             */
 /*   Updated: 2026/06/30 21:44:19 by ayanaga          ###   ########.fr       */
+=======
+/*   By: miida <miida@student.42tokyo.jp>           +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/06/13 22:44:13 by ayanaga           #+#    #+#             */
+/*   Updated: 2026/07/05 20:38:55 by miida            ###   ########.fr       */
+>>>>>>> Stashed changes
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +50,7 @@ t_list	*ft_lstnew(void *int_a1)
 	if (!new)
 		return (NULL);
 	new->content = content;
+	new->rank = 0;
 	new->next = NULL;
 	return (new);
 }
@@ -51,12 +59,23 @@ void	ft_lstadd_back(t_list **lst, t_list *new)
 {
 	t_list	*tmp;
 
+<<<<<<< Updated upstream
 	if (*lst == NULL)
 	{
 		*lst = new;
 		return ;
 	}
 	tmp = *lst;
+=======
+	if (stack == NULL)
+		return ;
+	if (*stack == NULL)
+	{
+		*stack = ft_lstnew(content);
+		return ;
+	}
+	tmp = *stack;
+>>>>>>> Stashed changes
 	while (tmp->next != NULL)
 		tmp = tmp->next;
 	tmp->next = new;
@@ -137,6 +156,30 @@ int	ft_isdigit(char c)
 		return (1);
 	else
 		return (0);
+}
+
+void	coordinate_compression(t_list **stack_a)
+{
+	t_list	*current;
+	t_list	*compare;
+	int		rank;
+
+	if (stack_a == NULL || *stack_a == NULL || ((*stack_a)->next == NULL))
+		return ;
+	current = *stack_a;
+	while (current != NULL)
+	{
+		rank = 0;
+		compare = *stack_a;
+		while (compare != NULL)
+		{
+			if (current->content > compare->content)
+				rank++;
+			compare = compare->next;
+		}
+		current->rank = rank;
+		current = current->next;
+	}
 }
 
 void	check_adaptive(float disorder, t_list **stack_a, t_list **stack_b)
