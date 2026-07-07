@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   push_swap.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: miida <miida@student.42tokyo.jp>           +#+  +:+       +#+        */
+/*   By: ayanaga <ayanaga@student.42.ja>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/13 22:44:13 by ayanaga           #+#    #+#             */
-/*   Updated: 2026/07/05 22:03:23 by miida            ###   ########.fr       */
+/*   Updated: 2026/07/07 19:41:52 by ayanaga          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -169,8 +169,8 @@ void	check_adaptive(float disorder, t_list **stack_a, t_list **stack_b)
 		simple(stack_a, stack_b);
 	// if (0.2 <= disorder && disorder < 0.5)
 	//	medium(stack_a, stack_b);
-	// if (0.5 <= disorder)
-	//	complex(stack_a, stack_b);
+	if (0.5 <= disorder)
+		complex(stack_a, stack_b);
 }
 int	ft_strlen(char *s)
 {
@@ -227,8 +227,8 @@ int	push_swap(int argc, char *argv[])
 			simple(&stack_a, &stack_b);
 		// else if (ft_strncmp(argv[i], "--medium"))
 		//	medium(&stack_a, &stack_b);
-		// else if (ft_strncmp(argv[i], "--complex"))
-		//	complex(&stack_a, &stack_b);
+		else if (ft_strncmp(argv[i], "--complex"))
+			complex(&stack_a, &stack_b);
 		// else if (ft_strncmp(argv[i], "--adaptive"))
 		//	check_adaptive(compute_disorder(&stack_a), &stack_a, &stack_b);
 		else
@@ -318,6 +318,40 @@ void	simple(t_list **stack_a, t_list **stack_b)
 	{
 		push_a(stack_a, stack_b);
 		node_count--;
+	}
+}
+
+void	complex(t_list **stack_a, t_list **stack_b)
+{
+	int		node_count;
+	int		max_rank;
+	int		count;
+	int		i;
+	t_list	*tmp;
+
+	node_count = count_node(stack_a);
+	max_rank = node_count - 1;
+	count = 0;
+	i = 0;
+	while (max_rank > 0)
+	{
+		max_rank = max_rank / 2;
+		count++;
+	}
+	while (count - i > 0)
+	{
+		while (node_count > 0)
+		{
+			if (((*stack_a)->rank >> i) & 1)
+				rotate_a(stack_a);
+			else
+				push_b(stack_a, stack_b);
+			node_count--;
+		}
+		while (count_node(stack_b) > 0)
+			push_a(stack_a, stack_b);
+		node_count = count_node(stack_a);
+		i++;
 	}
 }
 
@@ -443,4 +477,10 @@ void	reverse_rotate_b(t_list **stack)
 int	main(int argc, char *argv[])
 {
 	printf("%d", push_swap(argc, argv));
+	// tmp = *stack_a;
+	// while (tmp)
+	// {
+	// 	printf("%d\n", tmp->content);
+	// 	tmp = tmp->next;
+	// }
 }
