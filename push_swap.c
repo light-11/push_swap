@@ -6,7 +6,7 @@
 /*   By: ayanaga <ayanaga@student.42.ja>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/13 22:44:13 by ayanaga           #+#    #+#             */
-/*   Updated: 2026/07/07 19:41:52 by ayanaga          ###   ########.fr       */
+/*   Updated: 2026/07/08 21:57:14 by ayanaga          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -292,7 +292,7 @@ void	simple(t_list **stack_a, t_list **stack_b)
 
 	i = 0;
 	node_count = count_node(stack_a);
-	while (count_node(stack_a) > 1)
+	while (count_node(stack_a) > 2)
 	{
 		small_content_count = small_search(stack_a);
 		if (small_content_count >= count_node(stack_a) - small_content_count)
@@ -314,7 +314,9 @@ void	simple(t_list **stack_a, t_list **stack_b)
 		i = 0;
 		push_b(stack_a, stack_b);
 	}
-	while (node_count > 1)
+	if (small_search(stack_a) > 0)
+		swap_a(stack_a);
+	while (node_count > 2)
 	{
 		push_a(stack_a, stack_b);
 		node_count--;
@@ -323,11 +325,10 @@ void	simple(t_list **stack_a, t_list **stack_b)
 
 void	complex(t_list **stack_a, t_list **stack_b)
 {
-	int		node_count;
-	int		max_rank;
-	int		count;
-	int		i;
-	t_list	*tmp;
+	int	node_count;
+	int	max_rank;
+	int	count;
+	int	i;
 
 	node_count = count_node(stack_a);
 	max_rank = node_count - 1;
