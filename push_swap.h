@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   push_swap.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: miida <miida@student.42tokyo.jp>           +#+  +:+       +#+        */
+/*   By: ayanaga <ayanaga@student.42.ja>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/13 22:42:29 by ayanaga           #+#    #+#             */
-/*   Updated: 2026/07/05 21:42:48 by miida            ###   ########.fr       */
+/*   Updated: 2026/07/12 17:04:06 by ayanaga          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,12 +23,28 @@ typedef struct s_list
 	struct s_list	*next;
 }					t_list;
 
+typedef struct s_command
+{
+	int				sa;
+	int				sb;
+	int				ss;
+	int				pa;
+	int				pb;
+	int				ra;
+	int				rb;
+	int				rr;
+	int				rra;
+	int				rrb;
+	int				rrr;
+}					t_command;
+
 /* utils */
 int					ft_atoi(char *nptr);
 int					ft_strlen(char *s);
 int					ft_strncmp(char *s1, char *s2);
 int					ft_isdigit(char c);
 void				coordinate_compression(t_list **stack_a);
+void				initialize_command(t_command *command);
 
 /* list */
 t_list				*ft_lstnew(int content);
@@ -40,24 +56,29 @@ int					count_node(t_list **stack);
 int					check_duplication(t_list **stack_a, int value);
 float				compute_disorder(t_list **stack_a);
 void				check_adaptive(float disorder, t_list **stack_a,
-						t_list **stack_b);
+						t_list **stack_b, t_command *command);
 
 /* sort */
 int					push_swap(int argc, char *argv[]);
-void				simple(t_list **stack_a, t_list **stack_b);
-void				medium(t_list **stack_a, t_list **stack_b);
-void				complex(t_list **stack_a, t_list **stack_b);
+void				simple(t_list **stack_a, t_list **stack_b,
+						t_command *command);
+void				medium(t_list **stack_a, t_list **stack_b,
+						t_command *command);
+void				complex(t_list **stack_a, t_list **stack_b,
+						t_command *command);
 int					small_search(t_list **stack);
 
 /* operations */
-void				swap_a(t_list **stack);
-void				swap_b(t_list **stack);
-void				push_a(t_list **stack_a, t_list **stack_b);
-void				push_b(t_list **stack_a, t_list **stack_b);
-void				rotate_a(t_list **stack);
-void				rotate_b(t_list **stack);
-void				reverse_rotate_a(t_list **stack);
-void				reverse_rotate_b(t_list **stack);
+void				swap_a(t_list **stack, t_command *command);
+void				swap_b(t_list **stack, t_command *command);
+void				push_a(t_list **stack_a, t_list **stack_b,
+						t_command *command);
+void				push_b(t_list **stack_a, t_list **stack_b,
+						t_command *command);
+void				rotate_a(t_list **stack, t_command *command);
+void				rotate_b(t_list **stack, t_command *command);
+void				reverse_rotate_a(t_list **stack, t_command *command);
+void				reverse_rotate_b(t_list **stack, t_command *command);
 
 /* bench */
 void				bench(void);

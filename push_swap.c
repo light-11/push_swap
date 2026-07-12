@@ -6,7 +6,7 @@
 /*   By: ayanaga <ayanaga@student.42.ja>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/13 22:44:13 by ayanaga           #+#    #+#             */
-/*   Updated: 2026/07/08 21:57:14 by ayanaga          ###   ########.fr       */
+/*   Updated: 2026/07/12 17:13:53 by ayanaga          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -163,14 +163,15 @@ void	coordinate_compression(t_list **stack_a)
 	}
 }
 
-void	check_adaptive(float disorder, t_list **stack_a, t_list **stack_b)
+void	check_adaptive(float disorder, t_list **stack_a, t_list **stack_b,
+		t_command *command)
 {
 	if (disorder < 0.2)
-		simple(stack_a, stack_b);
+		simple(stack_a, stack_b, command);
 	// if (0.2 <= disorder && disorder < 0.5)
-	//	medium(stack_a, stack_b);
+	//	medium(stack_a, stack_b, command);
 	if (0.5 <= disorder)
-		complex(stack_a, stack_b);
+		complex(stack_a, stack_b, command);
 }
 int	ft_strlen(char *s)
 {
@@ -182,13 +183,30 @@ int	ft_strlen(char *s)
 	return (i);
 }
 
+void	initialize_command(t_command *command)
+{
+	command->sa = 0;
+	command->sb = 0;
+	command->ss = 0;
+	command->pa = 0;
+	command->pb = 0;
+	command->ra = 0;
+	command->rb = 0;
+	command->rr = 0;
+	command->rra = 0;
+	command->rrb = 0;
+	command->rrr = 0;
+}
+
 int	push_swap(int argc, char *argv[])
 {
-	int		i;
-	int		count;
-	t_list	*stack_a;
-	t_list	*stack_b;
+	int			i;
+	int			count;
+	t_list		*stack_a;
+	t_list		*stack_b;
+	t_command	command;
 
+	initialize_command(&command);
 	stack_a = NULL;
 	stack_b = NULL;
 	i = 1;
@@ -224,19 +242,21 @@ int	push_swap(int argc, char *argv[])
 		// if (ft_strncmp(argv[i], "--bench"))
 		//	bench();
 		if (ft_strncmp(argv[i], "--simple"))
-			simple(&stack_a, &stack_b);
+			simple(&stack_a, &stack_b, &command);
 		// else if (ft_strncmp(argv[i], "--medium"))
-		//	medium(&stack_a, &stack_b);
+		//	medium(&stack_a, &stack_b, &command);
 		else if (ft_strncmp(argv[i], "--complex"))
-			complex(&stack_a, &stack_b);
+			complex(&stack_a, &stack_b, &command);
 		// else if (ft_strncmp(argv[i], "--adaptive"))
-		//	check_adaptive(compute_disorder(&stack_a), &stack_a, &stack_b);
+		//	check_adaptive(compute_disorder(&stack_a), &stack_a, &stack_b,
+		//		&command);
 		else
 			count++;
 		i++;
 	}
 	if (count == argc - 1)
-		check_adaptive(compute_disorder(&stack_a), &stack_a, &stack_b);
+		check_adaptive(compute_disorder(&stack_a), &stack_a, &stack_b,
+			&command);
 	return (0);
 }
 
@@ -284,7 +304,7 @@ int	count_node(t_list **stack)
 	return (count);
 }
 
-void	simple(t_list **stack_a, t_list **stack_b)
+void	simple(t_list **stack_a, t_list **stack_b, t_command *command)
 {
 	int	small_content_count;
 	int	node_count;
@@ -299,7 +319,7 @@ void	simple(t_list **stack_a, t_list **stack_b)
 		{
 			while (count_node(stack_a) - small_content_count > i)
 			{
-				reverse_rotate_a(stack_a);
+				reverse_rotate_a(stack_a, command);
 				i++;
 			}
 		}
@@ -307,23 +327,23 @@ void	simple(t_list **stack_a, t_list **stack_b)
 		{
 			while (small_content_count > i)
 			{
-				rotate_a(stack_a);
+				rotate_a(stack_a, command);
 				i++;
 			}
 		}
 		i = 0;
-		push_b(stack_a, stack_b);
+		push_b(stack_a, stack_b, command);
 	}
 	if (small_search(stack_a) > 0)
-		swap_a(stack_a);
+		swap_a(stack_a, command);
 	while (node_count > 2)
 	{
-		push_a(stack_a, stack_b);
+		push_a(stack_a, stack_b, command);
 		node_count--;
 	}
 }
 
-void	complex(t_list **stack_a, t_list **stack_b)
+void	complex(t_list **stack_a, t_list **stack_b, t_command *command)
 {
 	int	node_count;
 	int	max_rank;
@@ -344,19 +364,19 @@ void	complex(t_list **stack_a, t_list **stack_b)
 		while (node_count > 0)
 		{
 			if (((*stack_a)->rank >> i) & 1)
-				rotate_a(stack_a);
+				rotate_a(stack_a, command);
 			else
-				push_b(stack_a, stack_b);
+				push_b(stack_a, stack_b, command);
 			node_count--;
 		}
 		while (count_node(stack_b) > 0)
-			push_a(stack_a, stack_b);
+			push_a(stack_a, stack_b, command);
 		node_count = count_node(stack_a);
 		i++;
 	}
 }
 
-void	swap_a(t_list **stack)
+void	swap_a(t_list **stack, t_command *command)
 {
 	t_list	*first_node;
 	t_list	*second_node;
@@ -367,9 +387,10 @@ void	swap_a(t_list **stack)
 	second_node->next = first_node;
 	*stack = second_node;
 	write(1, "sa\n", 3);
+	command->sa++;
 }
 
-void	swap_b(t_list **stack)
+void	swap_b(t_list **stack, t_command *command)
 {
 	t_list	*first_node;
 	t_list	*second_node;
@@ -380,9 +401,10 @@ void	swap_b(t_list **stack)
 	second_node->next = first_node;
 	*stack = second_node;
 	write(1, "sb\n", 3);
+	command->sb++;
 }
 
-void	push_a(t_list **stack_a, t_list **stack_b)
+void	push_a(t_list **stack_a, t_list **stack_b, t_command *command)
 {
 	t_list	*b_first_node;
 
@@ -391,9 +413,10 @@ void	push_a(t_list **stack_a, t_list **stack_b)
 	b_first_node->next = *stack_a;
 	*stack_a = b_first_node;
 	write(1, "pa\n", 3);
+	command->pa++;
 }
 
-void	push_b(t_list **stack_a, t_list **stack_b)
+void	push_b(t_list **stack_a, t_list **stack_b, t_command *command)
 {
 	t_list	*a_first_node;
 
@@ -402,9 +425,10 @@ void	push_b(t_list **stack_a, t_list **stack_b)
 	a_first_node->next = *stack_b;
 	*stack_b = a_first_node;
 	write(1, "pb\n", 3);
+	command->pb++;
 }
 
-void	rotate_a(t_list **stack)
+void	rotate_a(t_list **stack, t_command *command)
 {
 	t_list	*first_node;
 	t_list	*second_node;
@@ -418,9 +442,10 @@ void	rotate_a(t_list **stack)
 	(*stack)->next = first_node;
 	*stack = second_node;
 	write(1, "ra\n", 3);
+	command->ra++;
 }
 
-void	rotate_b(t_list **stack)
+void	rotate_b(t_list **stack, t_command *command)
 {
 	t_list	*first_node;
 	t_list	*second_node;
@@ -434,9 +459,10 @@ void	rotate_b(t_list **stack)
 	(*stack)->next = first_node;
 	*stack = second_node;
 	write(1, "rb\n", 3);
+	command->rb++;
 }
 
-void	reverse_rotate_a(t_list **stack)
+void	reverse_rotate_a(t_list **stack, t_command *command)
 {
 	t_list	*first_node;
 	t_list	*next_last_node;
@@ -453,9 +479,10 @@ void	reverse_rotate_a(t_list **stack)
 	last_node->next = first_node;
 	*stack = last_node;
 	write(1, "rra\n", 4);
+	command->rra++;
 }
 
-void	reverse_rotate_b(t_list **stack)
+void	reverse_rotate_b(t_list **stack, t_command *command)
 {
 	t_list	*first_node;
 	t_list	*next_last_node;
@@ -472,6 +499,7 @@ void	reverse_rotate_b(t_list **stack)
 	last_node->next = first_node;
 	*stack = last_node;
 	write(1, "rrb\n", 4);
+	command->rrb++;
 }
 #include <stdio.h>
 
@@ -484,4 +512,10 @@ int	main(int argc, char *argv[])
 	// 	printf("%d\n", tmp->content);
 	// 	tmp = tmp->next;
 	// }
+	// printf("%d\n", command->pa);
+	// printf("%d\n", command->pb);
+	// printf("%d\n", command->sa);
+	// printf("%d\n", command->sb);
+	// printf("%d\n", command->ra);
+	// printf("%d\n", command->rra);
 }
