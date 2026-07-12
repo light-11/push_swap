@@ -6,7 +6,7 @@
 /*   By: ayanaga <ayanaga@student.42.ja>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/13 22:42:29 by ayanaga           #+#    #+#             */
-/*   Updated: 2026/07/12 17:04:06 by ayanaga          ###   ########.fr       */
+/*   Updated: 2026/07/12 20:54:04 by ayanaga          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,15 @@ typedef struct s_command
 	int				rrr;
 }					t_command;
 
+typedef struct s_flag
+{
+	int				is_bench;
+	int				is_simple;
+	int				is_medium;
+	int				is_complex;
+	int				is_adaptive;
+}					t_flag;
+
 /* utils */
 int					ft_atoi(char *nptr);
 int					ft_strlen(char *s);
@@ -45,6 +54,11 @@ int					ft_strncmp(char *s1, char *s2);
 int					ft_isdigit(char c);
 void				coordinate_compression(t_list **stack_a);
 void				initialize_command(t_command *command);
+void				initialize_flag(t_flag *flag);
+void				make_stack_a(int argc, char *argv[], t_list **stack_a);
+void				is_flag(int argc, char *argv[], t_flag *flag);
+int					flag_branch(t_list **stack_a, t_list **stack_b,
+						t_command *command, t_flag *flag, float disorder);
 
 /* list */
 t_list				*ft_lstnew(int content);
@@ -81,6 +95,6 @@ void				reverse_rotate_a(t_list **stack, t_command *command);
 void				reverse_rotate_b(t_list **stack, t_command *command);
 
 /* bench */
-void				bench(void);
+void				bench(t_command *command, t_flag *flag, float disorder);
 
 #endif

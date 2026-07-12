@@ -6,7 +6,7 @@
 /*   By: ayanaga <ayanaga@student.42.ja>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/13 22:44:13 by ayanaga           #+#    #+#             */
-/*   Updated: 2026/07/12 17:13:53 by ayanaga          ###   ########.fr       */
+/*   Updated: 2026/07/12 20:55:12 by ayanaga          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -198,17 +198,42 @@ void	initialize_command(t_command *command)
 	command->rrr = 0;
 }
 
+void	initialize_flag(t_flag *flag)
+{
+	flag->is_bench = 0;
+	flag->is_simple = 0;
+	flag->is_medium = 0;
+	flag->is_complex = 0;
+	flag->is_adaptive = 0;
+}
+
 int	push_swap(int argc, char *argv[])
 {
-	int			i;
-	int			count;
 	t_list		*stack_a;
 	t_list		*stack_b;
+	float		disorder;
 	t_command	command;
+	t_flag		flag;
 
 	initialize_command(&command);
 	stack_a = NULL;
 	stack_b = NULL;
+	make_stack_a(argc, argv, &stack_a);
+	if (stack_a == NULL || stack_a->next == NULL)
+		return (0);
+	disorder = compute_disorder(&stack_a);
+	if (disorder == 0)
+		return (0);
+	coordinate_compression(&stack_a);
+	is_flag(argc, argv, &flag);
+	flag_branch(&stack_a, &stack_b, &command, &flag, disorder);
+	return (0);
+}
+
+void	make_stack_a(int argc, char *argv[], t_list **stack_a)
+{
+	int	i;
+
 	i = 1;
 	while (i < argc)
 	{
@@ -216,47 +241,60 @@ int	push_swap(int argc, char *argv[])
 			i++;
 		else
 		{
-			if (stack_a == NULL)
-				stack_a = ft_lstnew(ft_atoi(argv[i]));
+			if (*stack_a == NULL)
+				*stack_a = ft_lstnew(ft_atoi(argv[i]));
 			else
 			{
-				if (!check_duplication(&stack_a, ft_atoi(argv[i])))
+				if (!check_duplication(stack_a, ft_atoi(argv[i])))
 				{
 					write(2, "Error\n", 6);
-					return (0);
+					break ;
 				}
-				ft_lstadd_back(&stack_a, ft_atoi(argv[i]));
+				ft_lstadd_back(stack_a, ft_atoi(argv[i]));
 			}
 			i++;
 		}
 	}
-	if (stack_a == NULL || stack_a->next == NULL)
-		return (0);
-	if (compute_disorder(&stack_a) == 0)
-		return (0);
-	coordinate_compression(&stack_a);
+}
+
+void	is_flag(int argc, char *argv[], t_flag *flag)
+{
+	int	i;
+
 	i = 1;
-	count = 0;
 	while (i < argc)
 	{
-		// if (ft_strncmp(argv[i], "--bench"))
-		//	bench();
+		if (ft_strncmp(argv[i], "--bench"))
+			flag->is_bench++;
 		if (ft_strncmp(argv[i], "--simple"))
-			simple(&stack_a, &stack_b, &command);
-		// else if (ft_strncmp(argv[i], "--medium"))
-		//	medium(&stack_a, &stack_b, &command);
-		else if (ft_strncmp(argv[i], "--complex"))
-			complex(&stack_a, &stack_b, &command);
-		// else if (ft_strncmp(argv[i], "--adaptive"))
-		//	check_adaptive(compute_disorder(&stack_a), &stack_a, &stack_b,
-		//		&command);
-		else
-			count++;
+			flag->is_simple++;
+		// if (ft_strncmp(argv[i], "--medium"))
+		//	flag->is_medium++;
+		if (ft_strncmp(argv[i], "--complex"))
+			flag->is_complex++;
+		if (ft_strncmp(argv[i], "--adaptive"))
+			flag->is_adaptive++;
 		i++;
 	}
-	if (count == argc - 1)
-		check_adaptive(compute_disorder(&stack_a), &stack_a, &stack_b,
-			&command);
+}
+int	flag_branch(t_list **stack_a, t_list **stack_b, t_command *command,
+		t_flag *flag, float disorder)
+{
+	if (flag->is_simple == 1)
+		simple(stack_a, stack_b, command);
+	// else if (flag->is_medium == 1))
+	//	medium(stack_a, stack_b, command);
+	else if (flag->is_complex == 1)
+		complex(stack_a, stack_b, command);
+	else if (flag->is_adaptive == 1)
+		check_adaptive(disorder, stack_a, stack_b, command);
+	else if (flag->is_simple == 0 && flag->is_medium == 0
+		&& flag->is_complex == 0 && flag->is_adaptive == 0)
+		check_adaptive(disorder, stack_a, stack_b, command);
+	else
+		return (0);
+	if (flag->is_bench == 1)
+		bench(command, flag, disorder);
 	return (0);
 }
 
@@ -374,6 +412,10 @@ void	complex(t_list **stack_a, t_list **stack_b, t_command *command)
 		node_count = count_node(stack_a);
 		i++;
 	}
+}
+
+void	bench(t_command *command, t_flag *flag, float disorder)
+{
 }
 
 void	swap_a(t_list **stack, t_command *command)
