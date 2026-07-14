@@ -6,7 +6,7 @@
 /*   By: ayanaga <ayanaga@student.42.ja>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/13 22:44:13 by ayanaga           #+#    #+#             */
-/*   Updated: 2026/07/12 20:55:12 by ayanaga          ###   ########.fr       */
+/*   Updated: 2026/07/14 22:23:16 by ayanaga          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -182,7 +182,6 @@ int	ft_strlen(char *s)
 		i++;
 	return (i);
 }
-
 void	initialize_command(t_command *command)
 {
 	command->sa = 0;
@@ -197,7 +196,6 @@ void	initialize_command(t_command *command)
 	command->rrb = 0;
 	command->rrr = 0;
 }
-
 void	initialize_flag(t_flag *flag)
 {
 	flag->is_bench = 0;
@@ -206,7 +204,6 @@ void	initialize_flag(t_flag *flag)
 	flag->is_complex = 0;
 	flag->is_adaptive = 0;
 }
-
 int	push_swap(int argc, char *argv[])
 {
 	t_list		*stack_a;
@@ -229,7 +226,6 @@ int	push_swap(int argc, char *argv[])
 	flag_branch(&stack_a, &stack_b, &command, &flag, disorder);
 	return (0);
 }
-
 void	make_stack_a(int argc, char *argv[], t_list **stack_a)
 {
 	int	i;
@@ -256,7 +252,6 @@ void	make_stack_a(int argc, char *argv[], t_list **stack_a)
 		}
 	}
 }
-
 void	is_flag(int argc, char *argv[], t_flag *flag)
 {
 	int	i;
@@ -414,8 +409,40 @@ void	complex(t_list **stack_a, t_list **stack_b, t_command *command)
 	}
 }
 
+char	*char_disorder(float disorder)
+{
+	int		int_disorder;
+	char	*char_disorder;
+	int		i;
+
+	int_disorder = (int)(disorder * 10000);
+	if (int_disorder == 10000)
+		char_disorder = "100.00";
+	else
+	{
+		char_disorder = malloc(6);
+		if (!char_disorder)
+			return (NULL);
+		i = 4;
+		while (i >= 0)
+		{
+			if (i == 2)
+				char_disorder[i] = '.';
+			else
+			{
+				char_disorder[i] = (int_disorder % 10) + '0';
+				int_disorder /= 10;
+			}
+			i--;
+		}
+		char_disorder[5] = '\0';
+	}
+	return (char_disorder);
+}
+
 void	bench(t_command *command, t_flag *flag, float disorder)
 {
+	char_disorder(disorder);
 }
 
 void	swap_a(t_list **stack, t_command *command)
