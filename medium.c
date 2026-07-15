@@ -6,7 +6,7 @@
 /*   By: miida <miida@student.42tokyo.jp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/12 21:03:19 by miida             #+#    #+#             */
-/*   Updated: 2026/07/13 22:57:35 by miida            ###   ########.fr       */
+/*   Updated: 2026/07/15 22:52:24 by miida            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,20 @@ void	move_to_b(t_list **stack_a, t_list **stack_b, int min, int max)
 	}
 }
 
+int	find_max_rank(t_list *stack_b)
+{
+	int	max;
+
+	max = -1;
+	while (stack_b)
+	{
+		if (stack_b->rank > max)
+			max = stack_b->rank;
+		stack_b = stack_b->next;
+	}
+	return (max);
+}
+
 int	find_target_index(t_list *stack_b, int target)
 {
 	int	index;
@@ -76,33 +90,15 @@ void	rb_or_rrb(t_list **stack_b, int target_idx)
 	}
 }
 
-void	return_to_a(t_list **stack_a, t_list **stack_b,
-					int max_rank, int chunk_size)
+void	return_to_a(t_list **stack_a, t_list **stack_b)
 {
 	int	target;
-	int	target_count;
 	int	idx;
 
-	target = max_rank;
-	target_count = max_rank - chunk_size;
-	while (target > target_count && *stack_b)
-	{
-		idx = find_target_index(*stack_b, target);
-		if (idx == -1)
-		{
-			target--;
-			continue ;
-		}
-		rb_or_rrb(stack_b, idx);
-		push_a(stack_a, stack_b);
-		if (*stack_b && (*stack_b)->rank == target - 1)
-		{
-			push_a(stack_a, stack_b);
-			swap_a(stack_a);
-			target--;
-		}
-		target--;
-	}
+	target = find_max_rank(*stack_b);
+	idx = find_target_index(*stack_b, target);
+	rb_or_rrb(stack_b, idx);
+	push_a(stack_a, stack_b);
 }
 
 void	medium(t_list **stack_a, t_list **stack_b)
@@ -126,12 +122,10 @@ void	medium(t_list **stack_a, t_list **stack_b)
 	}
 	max_rank = total - 1;
 	min_rank = max_rank - chunk_size;
-	while (stack_b)
-	{
-		return_to_a(stack_a, stack_b, max_rank, chunk_size);
-		max_rank -= chunk_size;
-		min_rank -= chunk_size;
-	}
+	while (*stack_b)
+		return_to_a(stack_a, stack_b);
+	while (*stack_b)
+        push_a(stack_a, stack_b);
 }
 
 /*
