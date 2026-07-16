@@ -6,7 +6,7 @@
 /*   By: ayanaga <ayanaga@student.42.ja>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/13 22:44:13 by ayanaga           #+#    #+#             */
-/*   Updated: 2026/07/15 23:37:27 by ayanaga          ###   ########.fr       */
+/*   Updated: 2026/07/16 22:35:40 by ayanaga          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -174,7 +174,7 @@ void	check_adaptive(float disorder, t_list **stack_a, t_list **stack_b,
 	if (0.2 <= disorder && disorder < 0.5)
 	{
 		flag->is_medium = 1;
-		medium(stack_a, stack_b, command);
+		// medium(stack_a, stack_b, command);
 	}
 	if (0.5 <= disorder)
 	{
@@ -222,6 +222,7 @@ int	push_swap(int argc, char *argv[])
 	t_flag		flag;
 
 	initialize_command(&command);
+	initialize_flag(&flag);
 	stack_a = NULL;
 	stack_b = NULL;
 	make_stack_a(argc, argv, &stack_a);
@@ -295,7 +296,7 @@ int	flag_branch(t_list **stack_a, t_list **stack_b, t_command *command,
 	else if (flag->is_simple == 0 && flag->is_medium == 0
 		&& flag->is_complex == 0 && flag->is_adaptive == 0)
 	{
-		flag->adaptive = 1;
+		flag->is_adaptive = 1;
 		check_adaptive(disorder, stack_a, stack_b, command, flag);
 	}
 	else
@@ -424,12 +425,12 @@ void	complex(t_list **stack_a, t_list **stack_b, t_command *command)
 void	char_disorder(float disorder)
 {
 	int		int_disorder;
-	char	char_disorder;
+	char	char_disorder[5];
 	int		i;
 
 	int_disorder = (int)(disorder * 10000);
 	if (int_disorder == 10000)
-		write(2, "[bench] disorder: 100.00%\n", 28);
+		write(2, "[bench] disorder: 100.00%\n", 26);
 	else
 	{
 		write(2, "[bench] disorder: ", 18);
@@ -445,32 +446,32 @@ void	char_disorder(float disorder)
 			}
 			i--;
 		}
-		write(2, &char_disorder, 5);
-		write(2, "%\n", 5);
+		write(2, char_disorder, 5);
+		write(2, "%\n", 2);
 	}
 }
-void	strategy(t_flag flag)
+void	strategy(t_flag *flag)
 {
-	if (flag->adaptive == 1)
+	if (flag->is_adaptive == 1)
 	{
-		if (flag->simple == 1)
+		if (flag->is_simple == 1)
 			write(2, "[bench] strategy: Adaptive / O(n^2)\n", 36);
-		if (flag->medium == 1)
+		if (flag->is_medium == 1)
 			write(2, "[bench] strategy: Adaptive / O(n*sqrt(n))\n", 42);
-		if (flag->complex == 1)
-			write(2, "[bench] strategy: Adaptive / O(n log n)\n", 41);
+		if (flag->is_complex == 1)
+			write(2, "[bench] strategy: Adaptive / O(n log n)\n", 40);
 	}
 	else
 	{
-		if (flag->simple == 1)
+		if (flag->is_simple == 1)
 			write(2, "[bench] strategy: simple / O(n^2)\n", 34);
-		if (flag->medium == 1)
-			write(2, "[bench] strategy: medium / O(n*sqrt(n))\n", 41);
-		if (flag->complex == 1)
-			write(2, "[bench] strategy: Complex / O(n log n)\n", 40);
+		if (flag->is_medium == 1)
+			write(2, "[bench] strategy: medium / O(n*sqrt(n))\n", 40);
+		if (flag->is_complex == 1)
+			write(2, "[bench] strategy: Complex / O(n log n)\n", 39);
 	}
 }
-int	total_command(command)
+int	total_command(t_command *command)
 {
 	int	total;
 
@@ -482,7 +483,6 @@ int	total_command(command)
 
 void	ft_putnbr(int n)
 {
-	long	n;
 	char	char_n;
 
 	if (n >= 10)
@@ -491,12 +491,9 @@ void	ft_putnbr(int n)
 	write(2, &char_n, 1);
 }
 
-void	total_ops(command)
+void	total_ops(t_command *command)
 {
-	int		total;
-	int		n;
-	int		i;
-	char	*str;
+	int	total;
 
 	total = total_command(command);
 	write(2, "[bench] total_ops: ", 19);
@@ -508,32 +505,32 @@ void	command_1(t_command *command)
 {
 	write(2, "[bench] sa: ", 12);
 	ft_putnbr(command->sa);
-	write(2, "sb: " 4);
+	write(2, " sb: ", 5);
 	ft_putnbr(command->sb);
-	write(2, "ss: " 4);
+	write(2, " ss: ", 5);
 	ft_putnbr(command->ss);
-	write(2, "pa: " 4);
+	write(2, " pa: ", 5);
 	ft_putnbr(command->pa);
-	write(2, "pb: " 4);
+	write(2, " pb: ", 5);
 	ft_putnbr(command->pb);
-	write(2, "\n" 1);
+	write(2, "\n", 1);
 }
 
 void	command_2(t_command *command)
 {
 	write(2, "[bench] ra: ", 12);
 	ft_putnbr(command->ra);
-	write(2, "rb: " 4);
+	write(2, " rb: ", 5);
 	ft_putnbr(command->rb);
-	write(2, "rr: " 4);
+	write(2, " rr: ", 5);
 	ft_putnbr(command->rr);
-	write(2, "rra: " 5);
+	write(2, " rra: ", 6);
 	ft_putnbr(command->rra);
-	write(2, "rrb: " 5);
+	write(2, " rrb: ", 6);
 	ft_putnbr(command->rrb);
-	write(2, "rrr: " 5);
+	write(2, " rrr: ", 6);
 	ft_putnbr(command->rrr);
-	write(2, "\n" 1);
+	write(2, "\n", 1);
 }
 
 void	bench(t_command *command, t_flag *flag, float disorder)
@@ -674,7 +671,7 @@ void	reverse_rotate_b(t_list **stack, t_command *command)
 
 int	main(int argc, char *argv[])
 {
-	printf("%d", push_swap(argc, argv));
+	push_swap(argc, argv);
 	// tmp = *stack_a;
 	// while (tmp)
 	// {

@@ -6,7 +6,7 @@
 /*   By: ayanaga <ayanaga@student.42.ja>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/13 22:42:29 by ayanaga           #+#    #+#             */
-/*   Updated: 2026/07/12 20:54:04 by ayanaga          ###   ########.fr       */
+/*   Updated: 2026/07/16 22:16:12 by ayanaga          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ int					count_node(t_list **stack);
 int					check_duplication(t_list **stack_a, int value);
 float				compute_disorder(t_list **stack_a);
 void				check_adaptive(float disorder, t_list **stack_a,
-						t_list **stack_b, t_command *command);
+						t_list **stack_b, t_command *command, t_flag *flag);
 
 /* sort */
 int					push_swap(int argc, char *argv[]);
@@ -96,5 +96,12 @@ void				reverse_rotate_b(t_list **stack, t_command *command);
 
 /* bench */
 void				bench(t_command *command, t_flag *flag, float disorder);
+void				char_disorder(float disorder);
+void				strategy(t_flag *flag);
+int					total_command(t_command *command);
+void				ft_putnbr(int n);
+void				total_ops(t_command *command);
+void				command_1(t_command *command);
+void				command_2(t_command *command);
 
 #endif
