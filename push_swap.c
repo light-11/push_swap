@@ -6,7 +6,7 @@
 /*   By: ayanaga <ayanaga@student.42.ja>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/13 22:44:13 by ayanaga           #+#    #+#             */
-/*   Updated: 2026/07/16 22:35:40 by ayanaga          ###   ########.fr       */
+/*   Updated: 2026/07/16 23:16:27 by ayanaga          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -166,20 +166,28 @@ void	coordinate_compression(t_list **stack_a)
 void	check_adaptive(float disorder, t_list **stack_a, t_list **stack_b,
 		t_command *command, t_flag *flag)
 {
-	if (disorder < 0.2)
+	if (count_node(stack_a) <= 30)
 	{
 		flag->is_simple = 1;
 		simple(stack_a, stack_b, command);
 	}
-	if (0.2 <= disorder && disorder < 0.5)
+	else
 	{
-		flag->is_medium = 1;
-		// medium(stack_a, stack_b, command);
-	}
-	if (0.5 <= disorder)
-	{
-		flag->is_complex = 1;
-		complex(stack_a, stack_b, command);
+		if (disorder < 0.2)
+		{
+			flag->is_simple = 1;
+			simple(stack_a, stack_b, command);
+		}
+		if (0.2 <= disorder && disorder < 0.5)
+		{
+			flag->is_medium = 1;
+			// medium(stack_a, stack_b, command);
+		}
+		if (0.5 <= disorder)
+		{
+			flag->is_complex = 1;
+			complex(stack_a, stack_b, command);
+		}
 	}
 }
 int	ft_strlen(char *s)
@@ -667,8 +675,6 @@ void	reverse_rotate_b(t_list **stack, t_command *command)
 	write(1, "rrb\n", 4);
 	command->rrb++;
 }
-#include <stdio.h>
-
 int	main(int argc, char *argv[])
 {
 	push_swap(argc, argv);
