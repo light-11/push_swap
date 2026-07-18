@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   push_swap.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ayanaga <ayanaga@student.42.ja>            +#+  +:+       +#+        */
+/*   By: miida <miida@student.42tokyo.jp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/13 22:44:13 by ayanaga           #+#    #+#             */
-/*   Updated: 2026/07/07 19:41:52 by ayanaga          ###   ########.fr       */
+/*   Updated: 2026/07/12 22:52:24 by miida            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -223,12 +223,12 @@ int	push_swap(int argc, char *argv[])
 	{
 		// if (ft_strncmp(argv[i], "--bench"))
 		//	bench();
-		if (ft_strncmp(argv[i], "--simple"))
-			simple(&stack_a, &stack_b);
-		// else if (ft_strncmp(argv[i], "--medium"))
-		//	medium(&stack_a, &stack_b);
-		else if (ft_strncmp(argv[i], "--complex"))
-			complex(&stack_a, &stack_b);
+		// if (ft_strncmp(argv[i], "--simple"))
+		// 	simple(&stack_a, &stack_b);
+		if (ft_strncmp(argv[i], "--medium"))
+			medium(&stack_a, &stack_b);
+		// else if (ft_strncmp(argv[i], "--complex"))
+		// 	complex(&stack_a, &stack_b);
 		// else if (ft_strncmp(argv[i], "--adaptive"))
 		//	check_adaptive(compute_disorder(&stack_a), &stack_a, &stack_b);
 		else
@@ -472,15 +472,15 @@ void	reverse_rotate_b(t_list **stack)
 	*stack = last_node;
 	write(1, "rrb\n", 4);
 }
-#include <stdio.h>
+// #include <stdio.h>
 
-int	main(int argc, char *argv[])
-{
-	printf("%d", push_swap(argc, argv));
-	// tmp = *stack_a;
-	// while (tmp)
-	// {
-	// 	printf("%d\n", tmp->content);
-	// 	tmp = tmp->next;
-	// }
-}
+// int	main(int argc, char *argv[])
+// {
+// 	printf("%d", push_swap(argc, argv));
+// 	// tmp = *stack_a;
+// 	// while (tmp)
+// 	// {
+// 	// 	printf("%d\n", tmp->content);
+// 	// 	tmp = tmp->next;
+// 	// }
+// }
