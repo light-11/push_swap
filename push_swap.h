@@ -6,7 +6,7 @@
 /*   By: ayanaga <ayanaga@student.42.ja>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/13 22:42:29 by ayanaga           #+#    #+#             */
-/*   Updated: 2026/07/18 22:02:36 by ayanaga          ###   ########.fr       */
+/*   Updated: 2026/07/18 22:33:39 by ayanaga          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,15 @@ int					push_swap(int argc, char *argv[]);
 void				simple(t_list **stack_a, t_list **stack_b,
 						t_command *command);
 void				medium(t_list **stack_a, t_list **stack_b,
+						t_command *command);
+int					get_approx_sqrt(int nodes);
+void				move_to_b(t_list **stack_a, t_list **stack_b, int min,
+						int max, t_command *command);
+int					find_max_rank(t_list *stack_b);
+int					find_target_index(t_list *stack_b, int target);
+void				rb_or_rrb(t_list **stack_b, int target_idx,
+						t_command *command);
+void				return_to_a(t_list **stack_a, t_list **stack_b,
 						t_command *command);
 void				complex(t_list **stack_a, t_list **stack_b,
 						t_command *command);

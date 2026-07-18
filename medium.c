@@ -3,15 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   medium.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: miida <miida@student.42tokyo.jp>           +#+  +:+       +#+        */
+/*   By: ayanaga <ayanaga@student.42.ja>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/12 21:03:19 by miida             #+#    #+#             */
-/*   Updated: 2026/07/15 22:52:24 by miida            ###   ########.fr       */
+/*   Updated: 2026/07/18 22:57:52 by ayanaga          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
-#include <stdio.h>
 
 int	get_approx_sqrt(int nodes)
 {
@@ -25,7 +24,8 @@ int	get_approx_sqrt(int nodes)
 	return (i - 1);
 }
 
-void	move_to_b(t_list **stack_a, t_list **stack_b, int min, int max)
+void	move_to_b(t_list **stack_a, t_list **stack_b, int min, int max,
+		t_command *command)
 {
 	int	moved;
 	int	target_count;
@@ -36,11 +36,11 @@ void	move_to_b(t_list **stack_a, t_list **stack_b, int min, int max)
 	{
 		if ((*stack_a)->rank >= min && (*stack_a)->rank <= max)
 		{
-			push_b(stack_a, stack_b);
+			push_b(stack_a, stack_b, command);
 			moved++;
 		}
 		else
-			rotate_a(stack_a);
+			rotate_a(stack_a, command);
 	}
 }
 
@@ -73,7 +73,7 @@ int	find_target_index(t_list *stack_b, int target)
 	return (-1);
 }
 
-void	rb_or_rrb(t_list **stack_b, int target_idx)
+void	rb_or_rrb(t_list **stack_b, int target_idx, t_command *command)
 {
 	int	total;
 
@@ -81,27 +81,27 @@ void	rb_or_rrb(t_list **stack_b, int target_idx)
 	if (target_idx <= total / 2)
 	{
 		while (target_idx-- > 0)
-			rotate_b(stack_b);
+			rotate_b(stack_b, command);
 	}
 	else
 	{
 		while (target_idx++ < total)
-			reverse_rotate_b(stack_b);
+			reverse_rotate_b(stack_b, command);
 	}
 }
 
-void	return_to_a(t_list **stack_a, t_list **stack_b)
+void	return_to_a(t_list **stack_a, t_list **stack_b, t_command *command)
 {
 	int	target;
 	int	idx;
 
 	target = find_max_rank(*stack_b);
 	idx = find_target_index(*stack_b, target);
-	rb_or_rrb(stack_b, idx);
-	push_a(stack_a, stack_b);
+	rb_or_rrb(stack_b, idx, command);
+	push_a(stack_a, stack_b, command);
 }
 
-void	medium(t_list **stack_a, t_list **stack_b)
+void	medium(t_list **stack_a, t_list **stack_b, t_command *command)
 {
 	int	chunk_size;
 	int	min_rank;
@@ -114,14 +114,14 @@ void	medium(t_list **stack_a, t_list **stack_b)
 	max_rank = chunk_size - 1;
 	while (min_rank < total)
 	{
-		move_to_b(stack_a, stack_b, min_rank, max_rank);
+		move_to_b(stack_a, stack_b, min_rank, max_rank, command);
 		min_rank += chunk_size;
 		max_rank += chunk_size;
 	}
 	max_rank = total - 1;
 	min_rank = max_rank - chunk_size;
 	while (*stack_b)
-		return_to_a(stack_a, stack_b);
+		return_to_a(stack_a, stack_b, command);
 	while (*stack_b)
-        push_a(stack_a, stack_b);
+		push_a(stack_a, stack_b, command);
 }

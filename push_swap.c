@@ -3,16 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   push_swap.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: miida <miida@student.42tokyo.jp>           +#+  +:+       +#+        */
+/*   By: ayanaga <ayanaga@student.42.ja>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/13 22:44:13 by ayanaga           #+#    #+#             */
-/*   Updated: 2026/07/12 22:52:24 by miida            ###   ########.fr       */
+/*   Updated: 2026/07/18 22:59:57 by ayanaga          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
-#include <stdlib.h>
-#include <unistd.h>
 
 int	check_number(char *nptr)
 {
@@ -207,7 +205,7 @@ void	check_adaptive(float disorder, t_list **stack_a, t_list **stack_b,
 		if (0.2 <= disorder && disorder < 0.5)
 		{
 			flag->is_medium = 1;
-			// medium(stack_a, stack_b, command);
+			medium(stack_a, stack_b, command);
 		}
 		if (0.5 <= disorder)
 		{
@@ -312,7 +310,7 @@ void	is_flag(int argc, char *argv[], t_flag *flag)
 		if (ft_strncmp(argv[i], "--simple"))
 			flag->is_simple++;
 		if (ft_strncmp(argv[i], "--medium"))
-		  flag->is_medium++;
+			flag->is_medium++;
 		if (ft_strncmp(argv[i], "--complex"))
 			flag->is_complex++;
 		if (ft_strncmp(argv[i], "--adaptive"))
@@ -325,8 +323,8 @@ int	flag_branch(t_list **stack_a, t_list **stack_b, t_command *command,
 {
 	if (flag->is_simple == 1)
 		simple(stack_a, stack_b, command);
-	else if (flag->is_medium == 1))
-	  medium(stack_a, stack_b, command);
+	else if (flag->is_medium == 1)
+		medium(stack_a, stack_b, command);
 	else if (flag->is_complex == 1)
 		complex(stack_a, stack_b, command);
 	else if (flag->is_adaptive == 1)
