@@ -6,7 +6,7 @@
 /*   By: ayanaga <ayanaga@student.42.ja>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/13 22:44:13 by ayanaga           #+#    #+#             */
-/*   Updated: 2026/07/16 23:16:27 by ayanaga          ###   ########.fr       */
+/*   Updated: 2026/07/18 20:11:42 by ayanaga          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -358,34 +358,39 @@ int	count_node(t_list **stack)
 	return (count);
 }
 
+void	small_top(t_list **stack_a, t_command *command, int small_content_count)
+{
+	int	i;
+
+	i = 0;
+	if (small_content_count >= count_node(stack_a) - small_content_count)
+	{
+		while (count_node(stack_a) - small_content_count > i)
+		{
+			reverse_rotate_a(stack_a, command);
+			i++;
+		}
+	}
+	else
+	{
+		while (small_content_count > i)
+		{
+			rotate_a(stack_a, command);
+			i++;
+		}
+	}
+}
+
 void	simple(t_list **stack_a, t_list **stack_b, t_command *command)
 {
 	int	small_content_count;
 	int	node_count;
-	int	i;
 
-	i = 0;
 	node_count = count_node(stack_a);
 	while (count_node(stack_a) > 2)
 	{
 		small_content_count = small_search(stack_a);
-		if (small_content_count >= count_node(stack_a) - small_content_count)
-		{
-			while (count_node(stack_a) - small_content_count > i)
-			{
-				reverse_rotate_a(stack_a, command);
-				i++;
-			}
-		}
-		else
-		{
-			while (small_content_count > i)
-			{
-				rotate_a(stack_a, command);
-				i++;
-			}
-		}
-		i = 0;
+		small_top(stack_a, command, small_content_count);
 		push_b(stack_a, stack_b, command);
 	}
 	if (small_search(stack_a) > 0)

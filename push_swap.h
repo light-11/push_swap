@@ -6,7 +6,7 @@
 /*   By: ayanaga <ayanaga@student.42.ja>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/13 22:42:29 by ayanaga           #+#    #+#             */
-/*   Updated: 2026/07/16 22:16:12 by ayanaga          ###   ########.fr       */
+/*   Updated: 2026/07/18 20:13:35 by ayanaga          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,8 @@ void				medium(t_list **stack_a, t_list **stack_b,
 void				complex(t_list **stack_a, t_list **stack_b,
 						t_command *command);
 int					small_search(t_list **stack);
+void				small_top(t_list **stack_a, t_command *command,
+						int small_content_count);
 
 /* operations */
 void				swap_a(t_list **stack, t_command *command);
