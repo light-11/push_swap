@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   push_swap.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ayanaga <ayanaga@student.42.ja>            +#+  +:+       +#+        */
+/*   By: miida <miida@student.42tokyo.jp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/13 22:44:13 by ayanaga           #+#    #+#             */
-/*   Updated: 2026/07/18 21:47:33 by ayanaga          ###   ########.fr       */
+/*   Updated: 2026/07/12 22:52:24 by miida            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -311,8 +311,8 @@ void	is_flag(int argc, char *argv[], t_flag *flag)
 			flag->is_bench++;
 		if (ft_strncmp(argv[i], "--simple"))
 			flag->is_simple++;
-		// if (ft_strncmp(argv[i], "--medium"))
-		//	flag->is_medium++;
+		if (ft_strncmp(argv[i], "--medium"))
+		  flag->is_medium++;
 		if (ft_strncmp(argv[i], "--complex"))
 			flag->is_complex++;
 		if (ft_strncmp(argv[i], "--adaptive"))
@@ -325,8 +325,8 @@ int	flag_branch(t_list **stack_a, t_list **stack_b, t_command *command,
 {
 	if (flag->is_simple == 1)
 		simple(stack_a, stack_b, command);
-	// else if (flag->is_medium == 1))
-	//	medium(stack_a, stack_b, command);
+	else if (flag->is_medium == 1))
+	  medium(stack_a, stack_b, command);
 	else if (flag->is_complex == 1)
 		complex(stack_a, stack_b, command);
 	else if (flag->is_adaptive == 1)
@@ -710,6 +710,7 @@ void	reverse_rotate_b(t_list **stack, t_command *command)
 	write(1, "rrb\n", 4);
 	command->rrb++;
 }
+
 int	main(int argc, char *argv[])
 {
 	push_swap(argc, argv);
