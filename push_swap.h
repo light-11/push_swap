@@ -6,7 +6,7 @@
 /*   By: ayanaga <ayanaga@student.42.ja>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/13 22:42:29 by ayanaga           #+#    #+#             */
-/*   Updated: 2026/07/18 20:13:35 by ayanaga          ###   ########.fr       */
+/*   Updated: 2026/07/18 22:02:36 by ayanaga          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ int					ft_isdigit(char c);
 void				coordinate_compression(t_list **stack_a);
 void				initialize_command(t_command *command);
 void				initialize_flag(t_flag *flag);
-void				make_stack_a(int argc, char *argv[], t_list **stack_a);
+int					make_stack_a(int argc, char *argv[], t_list **stack_a);
 void				is_flag(int argc, char *argv[], t_flag *flag);
 int					flag_branch(t_list **stack_a, t_list **stack_b,
 						t_command *command, t_flag *flag, float disorder);
@@ -68,6 +68,7 @@ int					count_node(t_list **stack);
 
 /* check */
 int					check_duplication(t_list **stack_a, int value);
+int					check_number(char *nptr);
 float				compute_disorder(t_list **stack_a);
 void				check_adaptive(float disorder, t_list **stack_a,
 						t_list **stack_b, t_command *command, t_flag *flag);

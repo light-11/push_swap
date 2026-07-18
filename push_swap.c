@@ -6,13 +6,42 @@
 /*   By: ayanaga <ayanaga@student.42.ja>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/13 22:44:13 by ayanaga           #+#    #+#             */
-/*   Updated: 2026/07/18 20:11:42 by ayanaga          ###   ########.fr       */
+/*   Updated: 2026/07/18 21:47:33 by ayanaga          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 #include <stdlib.h>
 #include <unistd.h>
+
+int	check_number(char *nptr)
+{
+	int		i;
+	int		minus;
+	long	num;
+
+	i = 0;
+	minus = 1;
+	num = 0;
+	if (nptr[i] == '-')
+	{
+		minus = -1;
+		i++;
+	}
+	while (nptr[i] != '\0')
+	{
+		if ('0' <= nptr[i] && nptr[i] <= '9')
+			num = num * 10 + (nptr[i] - '0');
+		else
+			return (0);
+		i++;
+		if (-2147483648 > num * minus || num * minus > 2147483647)
+			return (0);
+	}
+	if ((minus == -1 && i < 2) || i < 1)
+		return (0);
+	return (1);
+}
 
 int	ft_atoi(char *nptr)
 {
@@ -23,12 +52,9 @@ int	ft_atoi(char *nptr)
 	i = 0;
 	minus = 1;
 	num = 0;
-	while ((9 <= nptr[i] && nptr[i] <= 13) || (nptr[i] == 32))
-		i++;
-	if (nptr[i] == '-' || nptr[i] == '+')
+	if (nptr[i] == '-')
 	{
-		if (nptr[i] == '-')
-			minus = -1;
+		minus = -1;
 		i++;
 	}
 	while ('0' <= nptr[i] && nptr[i] <= '9')
@@ -233,7 +259,11 @@ int	push_swap(int argc, char *argv[])
 	initialize_flag(&flag);
 	stack_a = NULL;
 	stack_b = NULL;
-	make_stack_a(argc, argv, &stack_a);
+	if (!make_stack_a(argc, argv, &stack_a))
+	{
+		write(2, "Error\n", 6);
+		return (0);
+	}
 	if (stack_a == NULL || stack_a->next == NULL)
 		return (0);
 	disorder = compute_disorder(&stack_a);
@@ -244,7 +274,7 @@ int	push_swap(int argc, char *argv[])
 	flag_branch(&stack_a, &stack_b, &command, &flag, disorder);
 	return (0);
 }
-void	make_stack_a(int argc, char *argv[], t_list **stack_a)
+int	make_stack_a(int argc, char *argv[], t_list **stack_a)
 {
 	int	i;
 
@@ -255,20 +285,20 @@ void	make_stack_a(int argc, char *argv[], t_list **stack_a)
 			i++;
 		else
 		{
+			if (!check_number(argv[i]))
+				return (0);
 			if (*stack_a == NULL)
 				*stack_a = ft_lstnew(ft_atoi(argv[i]));
 			else
 			{
 				if (!check_duplication(stack_a, ft_atoi(argv[i])))
-				{
-					write(2, "Error\n", 6);
-					break ;
-				}
+					return (0);
 				ft_lstadd_back(stack_a, ft_atoi(argv[i]));
 			}
 			i++;
 		}
 	}
+	return (1);
 }
 void	is_flag(int argc, char *argv[], t_flag *flag)
 {
