@@ -6,7 +6,7 @@
 /*   By: ayanaga <ayanaga@student.42.ja>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/13 22:44:13 by ayanaga           #+#    #+#             */
-/*   Updated: 2026/07/18 22:59:57 by ayanaga          ###   ########.fr       */
+/*   Updated: 2026/07/20 21:33:44 by ayanaga          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -245,6 +245,22 @@ void	initialize_flag(t_flag *flag)
 	flag->is_complex = 0;
 	flag->is_adaptive = 0;
 }
+
+int	free_stack(t_list **stack)
+{
+	t_list	*now_node;
+	t_list	*next_node;
+
+	now_node = *stack;
+	while (now_node != NULL)
+	{
+		next_node = now_node->next;
+		free(now_node);
+		now_node = next_node;
+	}
+	*stack = NULL;
+	return (0);
+}
 int	push_swap(int argc, char *argv[])
 {
 	t_list		*stack_a;
@@ -260,17 +276,18 @@ int	push_swap(int argc, char *argv[])
 	if (!make_stack_a(argc, argv, &stack_a))
 	{
 		write(2, "Error\n", 6);
-		return (0);
+		return (free_stack(&stack_a));
 	}
 	if (stack_a == NULL || stack_a->next == NULL)
-		return (0);
+		return (free_stack(&stack_a));
 	disorder = compute_disorder(&stack_a);
 	if (disorder == 0)
-		return (0);
+		return (free_stack(&stack_a));
 	coordinate_compression(&stack_a);
 	is_flag(argc, argv, &flag);
 	flag_branch(&stack_a, &stack_b, &command, &flag, disorder);
-	return (0);
+	free_stack(&stack_a);
+	return (free_stack(&stack_b));
 }
 int	make_stack_a(int argc, char *argv[], t_list **stack_a)
 {
@@ -434,19 +451,12 @@ void	complex(t_list **stack_a, t_list **stack_b, t_command *command)
 {
 	int	node_count;
 	int	max_rank;
-	int	count;
 	int	i;
 
 	node_count = count_node(stack_a);
 	max_rank = node_count - 1;
-	count = 0;
 	i = 0;
-	while (max_rank > 0)
-	{
-		max_rank = max_rank / 2;
-		count++;
-	}
-	while (count - i > 0)
+	while ((max_rank >> i) > 0)
 	{
 		while (node_count > 0)
 		{

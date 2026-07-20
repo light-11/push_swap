@@ -6,7 +6,7 @@
 /*   By: ayanaga <ayanaga@student.42.ja>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/13 22:42:29 by ayanaga           #+#    #+#             */
-/*   Updated: 2026/07/18 22:33:39 by ayanaga          ###   ########.fr       */
+/*   Updated: 2026/07/20 21:35:04 by ayanaga          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ t_list				*ft_lstnew(int content);
 void				ft_lstadd_back(t_list **lst, int content);
 t_list				*ft_lstlast(t_list *lst);
 int					count_node(t_list **stack);
+int					free_stack(t_list **stack);
 
 /* check */
 int					check_duplication(t_list **stack_a, int value);
