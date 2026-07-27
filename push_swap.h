@@ -6,7 +6,7 @@
 /*   By: ayanaga <ayanaga@student.42.ja>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/13 22:42:29 by ayanaga           #+#    #+#             */
-/*   Updated: 2026/07/20 21:35:04 by ayanaga          ###   ########.fr       */
+/*   Updated: 2026/07/27 18:24:30 by ayanaga          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,6 @@ typedef struct s_flag
 	int				is_adaptive;
 }					t_flag;
 
-/* utils */
 int					ft_atoi(char *nptr);
 int					ft_strlen(char *s);
 int					ft_strncmp(char *s1, char *s2);
@@ -59,22 +58,16 @@ int					make_stack_a(int argc, char *argv[], t_list **stack_a);
 void				is_flag(int argc, char *argv[], t_flag *flag);
 int					flag_branch(t_list **stack_a, t_list **stack_b,
 						t_command *command, t_flag *flag, float disorder);
-
-/* list */
 t_list				*ft_lstnew(int content);
 void				ft_lstadd_back(t_list **lst, int content);
 t_list				*ft_lstlast(t_list *lst);
 int					count_node(t_list **stack);
 int					free_stack(t_list **stack);
-
-/* check */
 int					check_duplication(t_list **stack_a, int value);
 int					check_number(char *nptr);
 float				compute_disorder(t_list **stack_a);
 void				check_adaptive(float disorder, t_list **stack_a,
 						t_list **stack_b, t_command *command, t_flag *flag);
-
-/* sort */
 int					push_swap(int argc, char *argv[]);
 void				simple(t_list **stack_a, t_list **stack_b,
 						t_command *command);
@@ -94,8 +87,6 @@ void				complex(t_list **stack_a, t_list **stack_b,
 int					small_search(t_list **stack);
 void				small_top(t_list **stack_a, t_command *command,
 						int small_content_count);
-
-/* operations */
 void				swap_a(t_list **stack, t_command *command);
 void				swap_b(t_list **stack, t_command *command);
 void				push_a(t_list **stack_a, t_list **stack_b,
@@ -106,8 +97,6 @@ void				rotate_a(t_list **stack, t_command *command);
 void				rotate_b(t_list **stack, t_command *command);
 void				reverse_rotate_a(t_list **stack, t_command *command);
 void				reverse_rotate_b(t_list **stack, t_command *command);
-
-/* bench */
 void				bench(t_command *command, t_flag *flag, float disorder);
 void				char_disorder(float disorder);
 void				strategy(t_flag *flag);
