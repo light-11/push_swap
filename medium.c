@@ -6,23 +6,11 @@
 /*   By: ayanaga <ayanaga@student.42.ja>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/12 21:03:19 by miida             #+#    #+#             */
-/*   Updated: 2026/07/18 22:57:52 by ayanaga          ###   ########.fr       */
+/*   Updated: 2026/07/27 16:06:04 by ayanaga          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
-
-int	get_approx_sqrt(int nodes)
-{
-	int	i;
-
-	i = 1;
-	if (nodes <= 0)
-		return (0);
-	while (i <= nodes / i)
-		i++;
-	return (i - 1);
-}
 
 void	move_to_b(t_list **stack_a, t_list **stack_b, int min, int max,
 		t_command *command)
@@ -71,23 +59,6 @@ int	find_target_index(t_list *stack_b, int target)
 		index++;
 	}
 	return (-1);
-}
-
-void	rb_or_rrb(t_list **stack_b, int target_idx, t_command *command)
-{
-	int	total;
-
-	total = count_node(stack_b);
-	if (target_idx <= total / 2)
-	{
-		while (target_idx-- > 0)
-			rotate_b(stack_b, command);
-	}
-	else
-	{
-		while (target_idx++ < total)
-			reverse_rotate_b(stack_b, command);
-	}
 }
 
 void	return_to_a(t_list **stack_a, t_list **stack_b, t_command *command)
