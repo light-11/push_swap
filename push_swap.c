@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   push_swap.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ayanaga <ayanaga@student.42.ja>            +#+  +:+       +#+        */
+/*   By: ayanaga <ayanaga@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/13 22:44:13 by ayanaga           #+#    #+#             */
-/*   Updated: 2026/07/27 17:40:10 by ayanaga          ###   ########.fr       */
+/*   Updated: 2026/07/28 22:02:33 by ayanaga          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,12 @@
 
 int	push_swap(int argc, char *argv[])
 {
-	t_list		*stack_a;
-	t_list		*stack_b;
-	float		disorder;
-	t_command	command;
-	t_flag		flag;
+	t_list			*stack_a;
+	t_list			*stack_b;
+	float			disorder;
+	t_command_flag	command_flag;
 
-	initialize_command(&command);
-	initialize_flag(&flag);
+	initialize_command_flag(&command_flag);
 	stack_a = NULL;
 	stack_b = NULL;
 	if (!make_stack_a(argc, argv, &stack_a))
@@ -35,8 +33,8 @@ int	push_swap(int argc, char *argv[])
 	if (disorder == 0)
 		return (free_stack(&stack_a));
 	coordinate_compression(&stack_a);
-	is_flag(argc, argv, &flag);
-	flag_branch(&stack_a, &stack_b, &command, &flag, disorder);
+	is_flag(argc, argv, &command_flag);
+	flag_branch(&stack_a, &stack_b, &command_flag, disorder);
 	free_stack(&stack_a);
 	return (free_stack(&stack_b));
 }
@@ -68,7 +66,7 @@ int	make_stack_a(int argc, char *argv[], t_list **stack_a)
 	return (1);
 }
 
-void	is_flag(int argc, char *argv[], t_flag *flag)
+void	is_flag(int argc, char *argv[], t_command_flag *command_flag)
 {
 	int	i;
 
@@ -76,48 +74,48 @@ void	is_flag(int argc, char *argv[], t_flag *flag)
 	while (i < argc)
 	{
 		if (ft_strncmp(argv[i], "--bench"))
-			flag->is_bench++;
-		if (ft_strncmp(argv[i], "--simple") && flag->is_simple == 0
-			&& flag->is_medium == 0 && flag->is_complex == 0
-			&& flag->is_adaptive == 0)
-			flag->is_simple++;
-		if (ft_strncmp(argv[i], "--medium") && flag->is_simple == 0
-			&& flag->is_medium == 0 && flag->is_complex == 0
-			&& flag->is_adaptive == 0)
-			flag->is_medium++;
-		if (ft_strncmp(argv[i], "--complex") && flag->is_simple == 0
-			&& flag->is_medium == 0 && flag->is_complex == 0
-			&& flag->is_adaptive == 0)
-			flag->is_complex++;
-		if (ft_strncmp(argv[i], "--adaptive") && flag->is_simple == 0
-			&& flag->is_medium == 0 && flag->is_complex == 0
-			&& flag->is_adaptive == 0)
-			flag->is_adaptive++;
+			command_flag->is_bench++;
+		if (ft_strncmp(argv[i], "--simple") && command_flag->is_simple == 0
+			&& command_flag->is_medium == 0 && command_flag->is_complex == 0
+			&& command_flag->is_adaptive == 0)
+			command_flag->is_simple++;
+		if (ft_strncmp(argv[i], "--medium") && command_flag->is_simple == 0
+			&& command_flag->is_medium == 0 && command_flag->is_complex == 0
+			&& command_flag->is_adaptive == 0)
+			command_flag->is_medium++;
+		if (ft_strncmp(argv[i], "--complex") && command_flag->is_simple == 0
+			&& command_flag->is_medium == 0 && command_flag->is_complex == 0
+			&& command_flag->is_adaptive == 0)
+			command_flag->is_complex++;
+		if (ft_strncmp(argv[i], "--adaptive") && command_flag->is_simple == 0
+			&& command_flag->is_medium == 0 && command_flag->is_complex == 0
+			&& command_flag->is_adaptive == 0)
+			command_flag->is_adaptive++;
 		i++;
 	}
 }
 
-int	flag_branch(t_list **stack_a, t_list **stack_b, t_command *command,
-		t_flag *flag, float disorder)
+int	flag_branch(t_list **stack_a, t_list **stack_b,
+		t_command_flag *command_flag, float disorder)
 {
-	if (flag->is_simple == 1)
-		simple(stack_a, stack_b, command);
-	else if (flag->is_medium == 1)
-		medium(stack_a, stack_b, command);
-	else if (flag->is_complex == 1)
-		complex(stack_a, stack_b, command);
-	else if (flag->is_adaptive == 1)
-		check_adaptive(disorder, stack_a, stack_b, command, flag);
-	else if (flag->is_simple == 0 && flag->is_medium == 0
-		&& flag->is_complex == 0 && flag->is_adaptive == 0)
+	if (command_flag->is_simple == 1)
+		simple(stack_a, stack_b, command_flag);
+	else if (command_flag->is_medium == 1)
+		medium(stack_a, stack_b, command_flag);
+	else if (command_flag->is_complex == 1)
+		complex(stack_a, stack_b, command_flag);
+	else if (command_flag->is_adaptive == 1)
+		check_adaptive(disorder, stack_a, stack_b, command_flag);
+	else if (command_flag->is_simple == 0 && command_flag->is_medium == 0
+		&& command_flag->is_complex == 0 && command_flag->is_adaptive == 0)
 	{
-		flag->is_adaptive = 1;
-		check_adaptive(disorder, stack_a, stack_b, command, flag);
+		command_flag->is_adaptive = 1;
+		check_adaptive(disorder, stack_a, stack_b, command_flag);
 	}
 	else
 		return (0);
-	if (flag->is_bench == 1)
-		bench(command, flag, disorder);
+	if (command_flag->is_bench == 1)
+		bench(command_flag, disorder);
 	return (0);
 }
 
@@ -130,10 +128,10 @@ int	main(int argc, char *argv[])
 	// 	printf("%d\n", tmp->content);
 	// 	tmp = tmp->next;
 	// }
-	// printf("%d\n", command->pa);
-	// printf("%d\n", command->pb);
-	// printf("%d\n", command->sa);
-	// printf("%d\n", command->sb);
-	// printf("%d\n", command->ra);
-	// printf("%d\n", command->rra);
+	// printf("%d\n", command_flag ->pa);
+	// printf("%d\n", command_flag ->pb);
+	// printf("%d\n", command_flag ->sa);
+	// printf("%d\n", command_flag ->sb);
+	// printf("%d\n", command_flag ->ra);
+	// printf("%d\n", command_flag ->rra);
 }

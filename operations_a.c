@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   operations_a.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ayanaga <ayanaga@student.42.ja>            +#+  +:+       +#+        */
+/*   By: ayanaga <ayanaga@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/27 16:12:29 by ayanaga           #+#    #+#             */
-/*   Updated: 2026/07/27 16:12:34 by ayanaga          ###   ########.fr       */
+/*   Updated: 2026/07/28 21:51:12 by ayanaga          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-void	swap_a(t_list **stack, t_command *command)
+void	swap_a(t_list **stack, t_command_flag *command_flag)
 {
 	t_list	*first_node;
 	t_list	*second_node;
@@ -23,10 +23,10 @@ void	swap_a(t_list **stack, t_command *command)
 	second_node->next = first_node;
 	*stack = second_node;
 	write(1, "sa\n", 3);
-	command->sa++;
+	command_flag->sa++;
 }
 
-void	push_a(t_list **stack_a, t_list **stack_b, t_command *command)
+void	push_a(t_list **stack_a, t_list **stack_b, t_command_flag *command_flag)
 {
 	t_list	*b_first_node;
 
@@ -35,10 +35,10 @@ void	push_a(t_list **stack_a, t_list **stack_b, t_command *command)
 	b_first_node->next = *stack_a;
 	*stack_a = b_first_node;
 	write(1, "pa\n", 3);
-	command->pa++;
+	command_flag->pa++;
 }
 
-void	rotate_a(t_list **stack, t_command *command)
+void	rotate_a(t_list **stack, t_command_flag *command_flag)
 {
 	t_list	*first_node;
 	t_list	*second_node;
@@ -52,10 +52,10 @@ void	rotate_a(t_list **stack, t_command *command)
 	(*stack)->next = first_node;
 	*stack = second_node;
 	write(1, "ra\n", 3);
-	command->ra++;
+	command_flag->ra++;
 }
 
-void	reverse_rotate_a(t_list **stack, t_command *command)
+void	reverse_rotate_a(t_list **stack, t_command_flag *command_flag)
 {
 	t_list	*first_node;
 	t_list	*next_last_node;
@@ -72,5 +72,5 @@ void	reverse_rotate_a(t_list **stack, t_command *command)
 	last_node->next = first_node;
 	*stack = last_node;
 	write(1, "rra\n", 4);
-	command->rra++;
+	command_flag->rra++;
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_utils.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ayanaga <ayanaga@student.42.ja>            +#+  +:+       +#+        */
+/*   By: ayanaga <ayanaga@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/27 16:13:19 by ayanaga           #+#    #+#             */
-/*   Updated: 2026/07/27 16:13:29 by ayanaga          ###   ########.fr       */
+/*   Updated: 2026/07/28 21:39:49 by ayanaga          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ int	ft_strlen(char *s)
 
 void	ft_putnbr(int n)
 {
-	char char_n;
+	char	char_n;
 
 	if (n >= 10)
 		ft_putnbr(n / 10);

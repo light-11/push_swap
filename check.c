@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ayanaga <ayanaga@student.42.ja>            +#+  +:+       +#+        */
+/*   By: ayanaga <ayanaga@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/27 16:13:10 by ayanaga           #+#    #+#             */
-/*   Updated: 2026/07/27 16:13:15 by ayanaga          ###   ########.fr       */
+/*   Updated: 2026/07/28 21:57:00 by ayanaga          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,29 +110,29 @@ void	coordinate_compression(t_list **stack_a)
 }
 
 void	check_adaptive(float disorder, t_list **stack_a, t_list **stack_b,
-		t_command *command, t_flag *flag)
+		t_command_flag *command_flag)
 {
 	if (count_node(stack_a) <= 30)
 	{
-		flag->is_simple = 1;
-		simple(stack_a, stack_b, command);
+		command_flag ->is_simple = 1;
+		simple(stack_a, stack_b, command_flag);
 	}
 	else
 	{
 		if (disorder < 0.2)
 		{
-			flag->is_simple = 1;
-			simple(stack_a, stack_b, command);
+			command_flag ->is_simple = 1;
+			simple(stack_a, stack_b, command_flag);
 		}
 		if (0.2 <= disorder && disorder < 0.5)
 		{
-			flag->is_medium = 1;
-			medium(stack_a, stack_b, command);
+			command_flag ->is_medium = 1;
+			medium(stack_a, stack_b, command_flag);
 		}
 		if (0.5 <= disorder)
 		{
-			flag->is_complex = 1;
-			complex(stack_a, stack_b, command);
+			command_flag ->is_complex = 1;
+			complex(stack_a, stack_b, command_flag);
 		}
 	}
 }

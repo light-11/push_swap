@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   list_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ayanaga <ayanaga@student.42.ja>            +#+  +:+       +#+        */
+/*   By: ayanaga <ayanaga@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/27 16:13:45 by ayanaga           #+#    #+#             */
-/*   Updated: 2026/07/27 16:13:48 by ayanaga          ###   ########.fr       */
+/*   Updated: 2026/07/28 21:40:47 by ayanaga          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,8 @@ t_list	*ft_lstlast(t_list *lst)
 
 int	count_node(t_list **stack)
 {
-	t_list *first_node;
-	int count;
+	t_list	*first_node;
+	int		count;
 
 	count = 0;
 	first_node = *stack;
