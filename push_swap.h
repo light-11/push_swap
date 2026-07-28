@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   push_swap.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ayanaga <ayanaga@student.42tokyo.jp>       +#+  +:+       +#+        */
+/*   By: miida <miida@student.42tokyo.jp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/13 22:42:29 by ayanaga           #+#    #+#             */
-/*   Updated: 2026/07/28 21:59:59 by ayanaga          ###   ########.fr       */
+/*   Updated: 2026/07/28 22:40:04 by miida            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ void				simple(t_list **stack_a, t_list **stack_b,
 void				medium(t_list **stack_a, t_list **stack_b,
 						t_command_flag *command_flag);
 int					get_approx_sqrt(int nodes);
-void				move_to_b(t_list **stack_a, t_list **stack_b, int min,
+void				move_to_b(t_list **stack_a, t_list **stack_b,
 						int max, t_command_flag *command_flag);
 int					find_max_rank(t_list *stack_b);
 int					find_target_index(t_list *stack_b, int target);

@@ -3,32 +3,36 @@
 /*                                                        :::      ::::::::   */
 /*   medium.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ayanaga <ayanaga@student.42.ja>            +#+  +:+       +#+        */
+/*   By: miida <miida@student.42tokyo.jp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/12 21:03:19 by miida             #+#    #+#             */
-/*   Updated: 2026/07/27 16:06:04 by ayanaga          ###   ########.fr       */
+/*   Updated: 2026/07/28 22:13:55 by miida            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-void	move_to_b(t_list **stack_a, t_list **stack_b, int min, int max,
-		t_command *command)
+void	move_to_b(t_list **stack_a, t_list **stack_b, int max,
+					t_command_flag *command_flag)
 {
 	int	moved;
-	int	target_count;
+	int	chunk_size;
+	int	min;
+	int	total;
 
 	moved = 0;
-	target_count = max - min + 1;
-	while (moved < target_count && *stack_a)
+	total = count_node(stack_a) + count_node(stack_b);
+	chunk_size = get_approx_sqrt(total);
+	min = max - chunk_size + 1;
+	while (moved < chunk_size && *stack_a)
 	{
 		if ((*stack_a)->rank >= min && (*stack_a)->rank <= max)
 		{
-			push_b(stack_a, stack_b, command);
+			push_b(stack_a, stack_b, command_flag);
 			moved++;
 		}
 		else
-			rotate_a(stack_a, command);
+			rotate_a(stack_a, command_flag);
 	}
 }
 
@@ -61,38 +65,34 @@ int	find_target_index(t_list *stack_b, int target)
 	return (-1);
 }
 
-void	return_to_a(t_list **stack_a, t_list **stack_b, t_command *command)
+void	return_to_a(t_list **stack_a, t_list **stack_b,
+					t_command_flag *command_flag)
 {
 	int	target;
 	int	idx;
 
 	target = find_max_rank(*stack_b);
 	idx = find_target_index(*stack_b, target);
-	rb_or_rrb(stack_b, idx, command);
-	push_a(stack_a, stack_b, command);
+	rb_or_rrb(stack_b, idx, command_flag);
+	push_a(stack_a, stack_b, command_flag);
 }
 
-void	medium(t_list **stack_a, t_list **stack_b, t_command *command)
+void	medium(t_list **stack_a, t_list **stack_b, t_command_flag *command_flag)
 {
 	int	chunk_size;
-	int	min_rank;
 	int	max_rank;
 	int	total;
 
 	total = count_node(stack_a);
 	chunk_size = get_approx_sqrt(total);
-	min_rank = 0;
 	max_rank = chunk_size - 1;
-	while (min_rank < total)
+	while ((max_rank - chunk_size + 1) < total)
 	{
-		move_to_b(stack_a, stack_b, min_rank, max_rank, command);
-		min_rank += chunk_size;
+		move_to_b(stack_a, stack_b, max_rank, command_flag);
 		max_rank += chunk_size;
 	}
-	max_rank = total - 1;
-	min_rank = max_rank - chunk_size;
 	while (*stack_b)
-		return_to_a(stack_a, stack_b, command);
+		return_to_a(stack_a, stack_b, command_flag);
 	while (*stack_b)
-		push_a(stack_a, stack_b, command);
+		push_a(stack_a, stack_b, command_flag);
 }

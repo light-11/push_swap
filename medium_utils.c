@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   medium_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ayanaga <ayanaga@student.42.ja>            +#+  +:+       +#+        */
+/*   By: miida <miida@student.42tokyo.jp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/27 16:13:51 by ayanaga           #+#    #+#             */
-/*   Updated: 2026/07/27 16:13:55 by ayanaga          ###   ########.fr       */
+/*   Updated: 2026/07/28 22:14:56 by miida            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,8 @@ int	get_approx_sqrt(int nodes)
 	return (i - 1);
 }
 
-void	rb_or_rrb(t_list **stack_b, int target_idx, t_command *command)
+void	rb_or_rrb(t_list **stack_b, int target_idx,
+					t_command_flag *command_flag)
 {
 	int	total;
 
@@ -32,11 +33,11 @@ void	rb_or_rrb(t_list **stack_b, int target_idx, t_command *command)
 	if (target_idx <= total / 2)
 	{
 		while (target_idx-- > 0)
-			rotate_b(stack_b, command);
+			rotate_b(stack_b, command_flag);
 	}
 	else
 	{
 		while (target_idx++ < total)
-			reverse_rotate_b(stack_b, command);
+			reverse_rotate_b(stack_b, command_flag);
 	}
 }
