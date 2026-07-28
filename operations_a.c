@@ -6,7 +6,7 @@
 /*   By: ayanaga <ayanaga@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/27 16:12:29 by ayanaga           #+#    #+#             */
-/*   Updated: 2026/07/28 21:51:12 by ayanaga          ###   ########.fr       */
+/*   Updated: 2026/07/28 23:00:22 by ayanaga          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,8 @@ void	rotate_a(t_list **stack, t_command_flag *command_flag)
 	t_list	*second_node;
 
 	first_node = *stack;
+	if ((*stack)->next == NULL)
+		return ;
 	if ((*stack)->next != NULL)
 		second_node = (*stack)->next;
 	while ((*stack)->next != NULL)
@@ -63,6 +65,8 @@ void	reverse_rotate_a(t_list **stack, t_command_flag *command_flag)
 
 	first_node = *stack;
 	last_node = *stack;
+	if ((*stack)->next == NULL)
+		return ;
 	while (last_node->next != NULL)
 	{
 		next_last_node = last_node;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   push_swap.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: miida <miida@student.42tokyo.jp>           +#+  +:+       +#+        */
+/*   By: ayanaga <ayanaga@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/13 22:42:29 by ayanaga           #+#    #+#             */
-/*   Updated: 2026/07/28 22:40:04 by miida            ###   ########.fr       */
+/*   Updated: 2026/07/28 23:35:53 by ayanaga          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ int					ft_isdigit(char c);
 void				coordinate_compression(t_list **stack_a);
 void				initialize_command_flag(t_command_flag *command_flag);
 int					make_stack_a(int argc, char *argv[], t_list **stack_a);
-void				is_flag(int argc, char *argv[],
+int					is_flag(int argc, char *argv[],
 						t_command_flag *command_flag);
 int					flag_branch(t_list **stack_a, t_list **stack_b,
 						t_command_flag *command_flag, float disorder);
@@ -70,8 +70,8 @@ void				simple(t_list **stack_a, t_list **stack_b,
 void				medium(t_list **stack_a, t_list **stack_b,
 						t_command_flag *command_flag);
 int					get_approx_sqrt(int nodes);
-void				move_to_b(t_list **stack_a, t_list **stack_b,
-						int max, t_command_flag *command_flag);
+void				move_to_b(t_list **stack_a, t_list **stack_b, int max,
+						t_command_flag *command_flag);
 int					find_max_rank(t_list *stack_b);
 int					find_target_index(t_list *stack_b, int target);
 void				rb_or_rrb(t_list **stack_b, int target_idx,

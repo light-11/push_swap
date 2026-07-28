@@ -6,7 +6,7 @@
 /*   By: ayanaga <ayanaga@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/13 22:44:13 by ayanaga           #+#    #+#             */
-/*   Updated: 2026/07/28 22:02:33 by ayanaga          ###   ########.fr       */
+/*   Updated: 2026/07/28 23:38:35 by ayanaga          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,11 @@ int	push_swap(int argc, char *argv[])
 	if (disorder == 0)
 		return (free_stack(&stack_a));
 	coordinate_compression(&stack_a);
-	is_flag(argc, argv, &command_flag);
+	if (!is_flag(argc, argv, &command_flag))
+	{
+		write(2, "Error\n", 6);
+		return (free_stack(&stack_a));
+	}
 	flag_branch(&stack_a, &stack_b, &command_flag, disorder);
 	free_stack(&stack_a);
 	return (free_stack(&stack_b));
@@ -66,7 +70,7 @@ int	make_stack_a(int argc, char *argv[], t_list **stack_a)
 	return (1);
 }
 
-void	is_flag(int argc, char *argv[], t_command_flag *command_flag)
+int	is_flag(int argc, char *argv[], t_command_flag *command_flag)
 {
 	int	i;
 
@@ -79,20 +83,23 @@ void	is_flag(int argc, char *argv[], t_command_flag *command_flag)
 			&& command_flag->is_medium == 0 && command_flag->is_complex == 0
 			&& command_flag->is_adaptive == 0)
 			command_flag->is_simple++;
-		if (ft_strncmp(argv[i], "--medium") && command_flag->is_simple == 0
+		else if (ft_strncmp(argv[i], "--medium") && command_flag->is_simple == 0
 			&& command_flag->is_medium == 0 && command_flag->is_complex == 0
 			&& command_flag->is_adaptive == 0)
 			command_flag->is_medium++;
-		if (ft_strncmp(argv[i], "--complex") && command_flag->is_simple == 0
-			&& command_flag->is_medium == 0 && command_flag->is_complex == 0
-			&& command_flag->is_adaptive == 0)
+		else if (ft_strncmp(argv[i], "--complex")
+			&& command_flag->is_simple == 0 && command_flag->is_medium == 0
+			&& command_flag->is_complex == 0 && command_flag->is_adaptive == 0)
 			command_flag->is_complex++;
-		if (ft_strncmp(argv[i], "--adaptive") && command_flag->is_simple == 0
-			&& command_flag->is_medium == 0 && command_flag->is_complex == 0
-			&& command_flag->is_adaptive == 0)
+		else if (ft_strncmp(argv[i], "--adaptive")
+			&& command_flag->is_simple == 0 && command_flag->is_medium == 0
+			&& command_flag->is_complex == 0 && command_flag->is_adaptive == 0)
 			command_flag->is_adaptive++;
+		else
+			return (0);
 		i++;
 	}
+	return (1);
 }
 
 int	flag_branch(t_list **stack_a, t_list **stack_b,
@@ -122,16 +129,4 @@ int	flag_branch(t_list **stack_a, t_list **stack_b,
 int	main(int argc, char *argv[])
 {
 	push_swap(argc, argv);
-	// tmp = *stack_a;
-	// while (tmp)
-	// {
-	// 	printf("%d\n", tmp->content);
-	// 	tmp = tmp->next;
-	// }
-	// printf("%d\n", command_flag ->pa);
-	// printf("%d\n", command_flag ->pb);
-	// printf("%d\n", command_flag ->sa);
-	// printf("%d\n", command_flag ->sb);
-	// printf("%d\n", command_flag ->ra);
-	// printf("%d\n", command_flag ->rra);
 }
