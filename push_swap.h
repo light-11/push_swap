@@ -6,7 +6,7 @@
 /*   By: ayanaga <ayanaga@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/13 22:42:29 by ayanaga           #+#    #+#             */
-/*   Updated: 2026/07/28 23:35:53 by ayanaga          ###   ########.fr       */
+/*   Updated: 2026/07/29 21:17:47 by ayanaga          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,9 +49,9 @@ int					ft_strncmp(char *s1, char *s2);
 int					ft_isdigit(char c);
 void				coordinate_compression(t_list **stack_a);
 void				initialize_command_flag(t_command_flag *command_flag);
-int					make_stack_a(int argc, char *argv[], t_list **stack_a);
-int					is_flag(int argc, char *argv[],
+int					make_stack_a(int argc, char *argv[], t_list **stack_a,
 						t_command_flag *command_flag);
+int					is_flag(char *argv_i, t_command_flag *command_flag);
 int					flag_branch(t_list **stack_a, t_list **stack_b,
 						t_command_flag *command_flag, float disorder);
 t_list				*ft_lstnew(int content);
